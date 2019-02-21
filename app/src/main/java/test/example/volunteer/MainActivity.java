@@ -22,6 +22,8 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.Objects;
+
 public class MainActivity extends AppCompatActivity {
 
     private String TAG = "MainActivity";
@@ -87,9 +89,9 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     //calling sign in method on click
-//                    Intent addPatient = new Intent(getBaseContext(), AddPatientActivity.class);
-//                    addPatient.putExtra("isAdmin", false);
-//                    startActivity(addPatient);
+                    Intent hospitalEditor = new Intent(getBaseContext(), HospitalEditorActivity.class);
+                    hospitalEditor.putExtra("editMode", false);
+                    startActivity(hospitalEditor);
                 }
             });
         }
@@ -135,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
                             getUserTypeAndRedirect();
                         } else {
                             //display some message here
-                            Toast.makeText(getBaseContext(), getString(R.string.error) + task.getException().getLocalizedMessage(), Toast.LENGTH_LONG).show();
+                            Toast.makeText(getBaseContext(), getString(R.string.error) + Objects.requireNonNull(task.getException()).getLocalizedMessage(), Toast.LENGTH_LONG).show();
                         }
                         progressDialog.dismiss();
                     }
@@ -157,7 +159,7 @@ public class MainActivity extends AppCompatActivity {
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                     if (task.isSuccessful()) {
                         DocumentSnapshot document = task.getResult();
-                        if (document.exists()) {
+                        if (document != null) {
                             // if the user exists on the database, check his type
                             String userType = document.getString("type");
                             Log.d(TAG, "DocumentSnapshot data: " + userType);
@@ -187,21 +189,15 @@ public class MainActivity extends AppCompatActivity {
             switch (currentUserType) {
                 case "Volunteer":
                     // goto Volunteer home activity
-                    Intent adminIntent = new Intent(getBaseContext(), VolunteerHomeActivity.class);
-                    startActivity(adminIntent);
+                    Intent vIntent = new Intent(getBaseContext(), VolunteerHomeActivity.class);
+                    startActivity(vIntent);
                     finish();
                     break;
-                case "doctor":
-                    // goto home activity
-//                    Intent doctorIintent = new Intent(getBaseContext(), HomeDoctorActivity.class);
-//                    startActivity(doctorIintent);
-//                    finish();
-                    break;
-                case "patient":
-                    // goto home activity
-//                    Intent patientIntent = new Intent(getBaseContext(), HomePatientActivity.class);
-//                    startActivity(patientIntent);
-//                    finish();
+                case "Hospital":
+                    // goto Hospital home activity
+                    Intent hIntent = new Intent(getBaseContext(), HospitalHomeActivity.class);
+                    startActivity(hIntent);
+                    finish();
                     break;
                 default:
                     Toast.makeText(this, R.string.invalid_user_type, Toast.LENGTH_LONG).show();

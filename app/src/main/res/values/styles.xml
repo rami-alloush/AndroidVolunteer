@@ -24,7 +24,7 @@
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="HospitalDashboard" parent="AppTheme.NoActionBar">
+    <style name="HospitalHome" parent="AppTheme.NoActionBar">
         <item name="colorPrimary">@color/hPrimaryColor</item>
         <item name="colorPrimaryDark">@color/hPrimaryDarkColor</item>
         <item name="colorAccent">@color/hSecondaryColor</item>

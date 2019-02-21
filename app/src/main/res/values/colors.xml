@@ -6,9 +6,9 @@
 
     <color name="vPrimaryColor">#7b1fa2</color>
     <color name="vPrimaryDarkColor">#4a0072</color>
-    <color name="vSecondaryColor">#fbc02d</color>
+    <color name="vSecondaryColor">#FFC107</color>
 
     <color name="hPrimaryColor">#c62828</color>
     <color name="hPrimaryDarkColor">#8e0000</color>
-    <color name="hSecondaryColor">#f44336</color>
+    <color name="hSecondaryColor">#FFC107</color>
 </resources>

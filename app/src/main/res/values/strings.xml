@@ -87,5 +87,12 @@
     <string name="separator">Separator</string>
     <string name="load_cv">Load CV</string>
     <string name="state_some_of_your_skills">State some of your Skills</string>
-    <string name="skills_placeholder">- Teamwork  - Graphic Design etc...</string>
+    <string name="skills_placeholder">- Teamwork  - Graphic Design etc…</string>
+    <string name="hospital_home">Hospital Home</string>
+    <string name="name">Name</string>
+    <string name="additional_information">Additional Information</string>
+    <string name="phone">Phone</string>
+    <string name="address">Address</string>
+    <string name="load_logo">Load Logo</string>
+    <string name="hospital_add">Hospital Added Successfully :)</string>
 </resources>
