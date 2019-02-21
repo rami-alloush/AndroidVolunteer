@@ -1,0 +1,79 @@
+<resources>
+    <string name="title_edit_profile">Edit Profile</string>
+    <string name="logo" translatable="false">Logo</string>
+
+    <!-- Strings related to login -->
+    <string name="app_name">Volunteer</string>
+    <string name="enter_email">Enter Email</string>
+    <string name="enter_password">Enter Password</string>
+    <string name="sign_in">Sign In</string>
+    <string name="register">Register</string>
+    <string name="please_enter_email">Please Enter Correct Email Address</string>
+    <string name="please_enter_password">Please Enter Password</string>
+    <string name="signing_in">Signing in …</string>
+    <string name="please_wait">Please Wait …</string>
+    <string name="successfully_signed_in">Successfully Signed In :)</string>
+    <string name="error">Error!</string>
+    <string name="register_volunteer">Register As Volunteer</string>
+    <string name="register_hospital">Register As Hospital</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="please_enter_name">Please enter name</string>
+    <string name="invalid_user_type">User type is not recognised!</string>
+
+    <string name="title_activity_home_doctor">Doctor Dashboard</string>
+    <string name="title_home">Home</string>
+    <string name="title_activity_home_patient">Patient Dashboard</string>
+    <string name="title_activity_home_admin">Admin Dashboard</string>
+    <string name="title_lab_tests">Lab Tests</string>
+    <string name="title_services">Services</string>
+
+    <string name="patients">Patients</string>
+    <string name="doctors">Doctors</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="add_new_patient">Add New Patient</string>
+    <string name="save">Save</string>
+    <string name="fill_all_fields">Please fill all fields</string>
+    <string name="patient_add">Patient Added Successfully</string>
+    <string name="enter_valid_email">Please enter valid email address</string>
+    <string name="doctor_add">Doctor Added Successfully!</string>
+    <string name="speciality">Speciality</string>
+    <string name="shift_info">Shift Info</string>
+    <string name="add_new_doctor">Add New Doctor</string>
+    <string name="pay_for_services">Pay for Services</string>
+    <string name="title_register_patient">Register Patient</string>
+    <string name="label_pay_now">Pay Now</string>
+    <string name="no_image_picked">No Image picked :/</string>
+    <string name="request_a_home_based_care_service">Request a home-based Care Service</string>
+    <string name="communicate_with_a_care_provider">Communicate with a Care Provider</string>
+    <string name="best_of_care_providers" translatable="false">best_of_care_providers</string>
+    <string name="request_service">Request Service</string>
+    <string name="service_provider">Service Provider</string>
+    <string name="service_location_address">Service Location (Address)</string>
+    <string name="service_location_phone_number">Service Communication Details</string>
+    <string name="service_time_preferred">Service Time (Preferred)</string>
+    <string name="service_add">Service Request Sent Successfully :)</string>
+    <string name="set_time">Set Date and Time</string>
+    <string name="service_location_phone_hint">e.g. Phone number, Skype Account</string>
+    <string name="service_time_note">Note: Services requested are to be provided on same day or within 24 hours maximum (if possible).</string>
+    <string name="load_lab_test">Load Lab Test</string>
+    <string name="services_you_received_not_evaluated">Services completed but not evaluated yet.</string>
+    <string name="new_services">New Services</string>
+    <string name="completed_services">Completed Services</string>
+    <string name="recent_services">Recent Services</string>
+    <string name="completed_question">Completed?</string>
+    <string name="service_type_online">Service: Remote-Communication Service</string>
+    <string name="service_type_offline">Service: Home-Based Service</string>
+    <string name="no_labtests">Sorry, no lab test results have been uploaded for you yet.</string>
+    <string name="modify_patient">Modify Patient Data</string>
+    <string name="patient_updated">Patient Updated Successfully :)</string>
+    <string name="service_status_updated">Service Status Updated.</string>
+    <string name="rate_changed_to">Rate changed to:</string>
+    <string name="load_profile_pic">Load Profile Pic</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="volunter_add">Volunteer Added Successfully</string>
+</resources>

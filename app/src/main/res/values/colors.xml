@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#008577</color>
+    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorAccent">#D81B60</color>
+
+    <color name="vPrimaryColor">#43a047</color>
+    <color name="vPrimaryDarkColor">#00701a</color>
+    <color name="vSecondaryColor">#33691e</color>
+
+    <color name="hPrimaryColor">#c62828</color>
+    <color name="hPrimaryDarkColor">#8e0000</color>
+    <color name="hSecondaryColor">#f44336</color>
+</resources>
