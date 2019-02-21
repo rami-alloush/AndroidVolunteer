@@ -114,55 +114,138 @@
             tools:text="@string/password" />
 
         <LinearLayout
+            android:id="@+id/appFields"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
+            android:padding="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/volunteerPassword">
 
+            <ImageView
+                android:id="@+id/sep"
+                android:layout_width="match_parent"
+                android:layout_height="5dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:contentDescription="@string/separator"
+                android:scaleType="fitXY"
+                app:srcCompat="@android:drawable/progress_indeterminate_horizontal" />
+
             <TextView
-                android:id="@+id/textView"
+                android:id="@+id/AppTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="TextView" />
+                android:text="@string/application_fields"
+                android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
 
             <EditText
-                android:id="@+id/editText"
+                android:id="@+id/volunteerMobile"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autofillHints=""
+                android:ems="10"
+                android:hint="@string/mobile"
+                android:inputType="phone"
+                android:singleLine="true"
+                android:textAlignment="center" tools:targetApi="o" />
+
+            <EditText
+                android:id="@+id/volunteerAge"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autofillHints=""
+                android:ems="10"
+                android:hint="@string/age"
+                android:inputType="number"
+                android:textAlignment="center" tools:targetApi="o" />
+
+            <RadioGroup
+                android:id="@+id/volunteerGender"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:checkedButton="@+id/vMale">
+
+                <RadioButton
+                    android:id="@+id/vMale"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0"
+                    android:checked="false"
+                    android:text="@string/male" />
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0"
+                    android:checked="false"
+                    android:text="@string/female" />
+            </RadioGroup>
+
+            <EditText
+                android:id="@+id/volunteerCity"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
+                android:hint="@string/city"
                 android:inputType="textPersonName"
-                android:text="Name" />
+                android:textAlignment="center"
+                android:autofillHints="" tools:targetApi="o" />
+
+            <EditText
+                android:id="@+id/volunteerDegree"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="@string/degree"
+                android:inputType="textPersonName"
+                android:textAlignment="center"
+                android:autofillHints="" tools:targetApi="o" />
+
+            <TextView
+                android:id="@+id/skillsLabel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/state_some_of_your_skills"
+                android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
+
+            <MultiAutoCompleteTextView
+                android:id="@+id/volunteerSkills"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/skills_placeholder"
+                android:text="@string/skills_placeholder" />
+
         </LinearLayout>
 
         <ImageView
-            android:id="@+id/labTestImage"
+            android:id="@+id/volunteerCV"
             android:layout_width="wrap_content"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
-            android:contentDescription="@string/load_lab_test"
-            app:layout_constraintBottom_toTopOf="@+id/loadProfilePic"
+            android:contentDescription="@string/load_cv"
+            app:layout_constraintBottom_toTopOf="@+id/loadCV"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/volunteerPassword"
+            app:layout_constraintTop_toBottomOf="@+id/appFields"
             tools:srcCompat="@android:drawable/ic_menu_report_image" />
 
         <Button
-            android:id="@+id/loadProfilePic"
+            android:id="@+id/loadCV"
             style="@style/Widget.AppCompat.Button.Colored"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
-            android:text="@string/load_profile_pic"
-            app:layout_constraintBottom_toTopOf="@+id/setChanges"
+            android:text="@string/load_cv"
+            app:layout_constraintBottom_toTopOf="@+id/saveVolunteerBtn"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
         <Button
-            android:id="@+id/setChanges"
+            android:id="@+id/saveVolunteerBtn"
             style="@style/Widget.AppCompat.Button.Colored"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

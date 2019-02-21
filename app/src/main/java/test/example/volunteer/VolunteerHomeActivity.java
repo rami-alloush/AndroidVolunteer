@@ -78,18 +78,16 @@ public class VolunteerHomeActivity extends AppCompatActivity {
             // Return a ServicesFragment (defined as a static inner class below).
             switch (position) {
                 default:
-                    return new RequestServiceFragment(); //ServicesFragment.newInstance("patient", 1);
+                    return new BlankFragment();
                 case 1:
-                    return new RequestServiceFragment();
-                case 2:
-                    return new RequestServiceFragment();
+                    return new BlankFragment();
             }
         }
 
         @Override
         public int getCount() {
-            // Show 3 total pages.
-            return 3;
+            // Show 2 total pages.
+            return 2;
         }
 
         @Override
@@ -98,9 +96,7 @@ public class VolunteerHomeActivity extends AppCompatActivity {
                 case 0:
                     return getString(R.string.title_home);
                 case 1:
-                    return getString(R.string.title_lab_tests);
-                case 2:
-                    return getString(R.string.title_services);
+                    return getString(R.string.title_opportunities);
                 default:
                     return "";
             }
@@ -139,49 +135,4 @@ public class VolunteerHomeActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
-
-    /**
-     * A new fragment for Request Service Tab
-     */
-    public static class RequestServiceFragment extends Fragment {
-
-        public RequestServiceFragment() {
-        }
-
-        @Override
-        public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_blank, container, false);
-//            Button homeService = rootView.findViewById(R.id.homeService);
-//            homeService.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-////                    Intent intent = new Intent(getActivity(), AddServiceActivity.class);
-////                    intent.putExtra("serviceLocation", "offline");
-////                    startActivity(intent);
-//                }
-//            });
-//
-//            Button phoneService = rootView.findViewById(R.id.phoneService);
-//            phoneService.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    Intent intent = new Intent(getActivity(), AddServiceActivity.class);
-//                    intent.putExtra("serviceLocation", "online");
-//                    startActivity(intent);
-//                }
-//            });
-//
-//            Button payServices = rootView.findViewById(R.id.payService);
-//            payServices.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                    Intent intent = new Intent(getActivity(), PaymentActivity.class);
-//                    startActivity(intent);
-//                }
-//            });
-            return rootView;
-        }
-    }
-
 }

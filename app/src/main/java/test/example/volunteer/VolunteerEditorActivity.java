@@ -14,6 +14,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -46,12 +48,25 @@ public class VolunteerEditorActivity extends AppCompatActivity {
     private EditText lastNameView;
     private EditText emailView;
     private EditText passwordView;
-    private ImageView labTestImageView;
+    private EditText mobileView;
+    private EditText ageView;
+    private RadioGroup genderView;
+    private EditText cityView;
+    private EditText degreeView;
+    private EditText skillsView;
+    private ImageView volunteerCVview;
     private Bitmap bitmap;
-    private String firstName;
-    private String lastName;
-    private String email;
-    private String password;
+
+    private String FName;
+    private String LName;
+    private String Email;
+    private String Password;
+    private String Mobile;
+    private String Age;
+    private String Gender;
+    private String City;
+    private String Degree;
+    private String Skills;
 
     //defining firebaseauth object
     private FirebaseAuth firebaseAuth;
@@ -69,7 +84,13 @@ public class VolunteerEditorActivity extends AppCompatActivity {
         lastNameView = findViewById(R.id.volunteerLastName);
         emailView = findViewById(R.id.volunteerEmail);
         passwordView = findViewById(R.id.volunteerPassword);
-        labTestImageView = findViewById(R.id.labTestImage);
+        mobileView = findViewById(R.id.volunteerMobile);
+        ageView = findViewById(R.id.volunteerAge);
+        genderView = findViewById(R.id.volunteerGender);
+        cityView = findViewById(R.id.volunteerCity);
+        degreeView = findViewById(R.id.volunteerDegree);
+        skillsView = findViewById(R.id.volunteerSkills);
+        volunteerCVview = findViewById(R.id.volunteerCV);
 
         //initializing firebase auth object
         firebaseAuth = FirebaseAuth.getInstance();
@@ -81,7 +102,7 @@ public class VolunteerEditorActivity extends AppCompatActivity {
             setTitle(getString(R.string.register_volunteer));
         }
 
-        Button loadImage = findViewById(R.id.loadProfilePic);
+        Button loadImage = findViewById(R.id.loadCV);
         loadImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -93,7 +114,7 @@ public class VolunteerEditorActivity extends AppCompatActivity {
             }
         });
 
-        Button setChanges = findViewById(R.id.setChanges);
+        Button setChanges = findViewById(R.id.saveVolunteerBtn);
         setChanges.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -121,7 +142,7 @@ public class VolunteerEditorActivity extends AppCompatActivity {
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 }
-                labTestImageView.setImageBitmap(bitmap);
+                volunteerCVview.setImageBitmap(bitmap);
 
             } else {
                 Toast.makeText(this, R.string.no_image_picked,
@@ -167,14 +188,21 @@ public class VolunteerEditorActivity extends AppCompatActivity {
     private void registerUser() {
         // Read from input fields
         // Use trim to eliminate leading or trailing white space
-        firstName = firstNameView.getText().toString().trim();
-        lastName = lastNameView.getText().toString().trim();
-        email = emailView.getText().toString().trim();
-        password = passwordView.getText().toString().trim();
+        FName = firstNameView.getText().toString().trim();
+        LName = lastNameView.getText().toString().trim();
+        Email = emailView.getText().toString().trim();
+        Password = passwordView.getText().toString().trim();
+        Mobile = mobileView.getText().toString().trim();
+        Age = ageView.getText().toString().trim();
+        RadioButton checkedGender = findViewById(genderView.getCheckedRadioButtonId());
+        Gender = checkedGender.getText().toString();
+        City = cityView.getText().toString().trim();
+        Degree = degreeView.getText().toString().trim();
+        Skills = skillsView.getText().toString().trim();
 
         // Check if all the fields in the editor are filled
-        if (TextUtils.isEmpty(firstName) && TextUtils.isEmpty(lastName)
-                && TextUtils.isEmpty(email) && TextUtils.isEmpty(password)) {
+        if (TextUtils.isEmpty(FName) && TextUtils.isEmpty(LName)
+                && TextUtils.isEmpty(Email) && TextUtils.isEmpty(Password)) {
             Toast.makeText(this, R.string.fill_all_fields,
                     Toast.LENGTH_LONG).show();
             // make sure we don't continue the code
@@ -182,22 +210,22 @@ public class VolunteerEditorActivity extends AppCompatActivity {
         }
 
         //checking if any field is empty
-        if (TextUtils.isEmpty(firstName) || TextUtils.isEmpty(lastName)) {
+        if (TextUtils.isEmpty(FName) || TextUtils.isEmpty(LName)) {
             Toast.makeText(this, R.string.please_enter_name, Toast.LENGTH_LONG).show();
             return;
         }
-        if (TextUtils.isEmpty(email) || !isEmailValid(email)) {
+        if (TextUtils.isEmpty(Email) || !isEmailValid(Email)) {
             Toast.makeText(this, R.string.enter_valid_email, Toast.LENGTH_LONG).show();
             return;
         }
 
-        if (TextUtils.isEmpty(password)) {
+        if (TextUtils.isEmpty(Password)) {
             Toast.makeText(this, R.string.please_enter_password, Toast.LENGTH_LONG).show();
             return;
         }
 
         // Connect to Firebase Auth to create new user using Email and Password
-        firebaseAuth.createUserWithEmailAndPassword(email, password)
+        firebaseAuth.createUserWithEmailAndPassword(Email, Password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
@@ -208,7 +236,7 @@ public class VolunteerEditorActivity extends AppCompatActivity {
                             newUser = firebaseAuth.getCurrentUser();
                             if (firebaseAuth.getCurrentUser() != null) {
                                 // Update Display Name
-                                String fullName = firstName + " " + lastName;
+                                String fullName = FName + " " + LName;
                                 UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                                         .setDisplayName(fullName).build();
                                 if (newUser != null) {
@@ -231,7 +259,7 @@ public class VolunteerEditorActivity extends AppCompatActivity {
     private void saveUser(String newUID) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         DocumentReference userRef = db.collection("users").document(newUID);
-        userRef.set(new Volunteer(firstName, lastName, email, password))
+        userRef.set(new Volunteer(FName, LName, Email, Password, Mobile, Age, Gender, City, Degree, Skills, newUID))
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
@@ -282,4 +310,5 @@ public class VolunteerEditorActivity extends AppCompatActivity {
     public void onBackPressed() {
         moveTaskToBack(true);
     }
+
 }
