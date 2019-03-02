@@ -213,6 +213,7 @@ public class MainActivity extends AppCompatActivity {
     public void userSingOut() {
         try {
             firebaseAuth.signOut();
+            Toast.makeText(this, R.string.successfully_signed_out, Toast.LENGTH_LONG).show();
             Intent intent = new Intent(getBaseContext(), MainActivity.class);
             startActivity(intent);
         } catch (Exception e) {

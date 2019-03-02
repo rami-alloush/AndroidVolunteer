@@ -95,4 +95,12 @@
     <string name="address">Address</string>
     <string name="load_logo">Load Logo</string>
     <string name="hospital_add">Hospital Added Successfully :)</string>
+    <string name="details">Details</string>
+    <string name="title">Title</string>
+    <string name="duration">Duration</string>
+    <string name="opportunity_status_updated">Opportunity  Status Updated</string>
+    <string name="successfully_signed_out">Successfully Signed Out</string>
+    <string name="title_applications">Applications</string>
+    <string name="your_opportunities">Your Opportunities</string>
+    <string name="days">Day(s)</string>
 </resources>
