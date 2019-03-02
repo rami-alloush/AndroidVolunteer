@@ -1,9 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/appFields"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".OpportunityEditorActivity">
+    android:orientation="vertical"
+    android:padding="8dp">
 
-</android.support.constraint.ConstraintLayout>
+    <TextView
+        android:id="@+id/opportunityFields"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/opportunity_fields"
+        android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
+
+    <EditText
+        android:id="@+id/opportunityTitle"
+        tools:targetApi="o"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:autofillHints=""
+        android:ems="10"
+        android:hint="@string/title"
+        android:singleLine="true"
+        android:textAlignment="center" />
+
+    <EditText
+        android:id="@+id/opportunityDuration"
+        tools:targetApi="o"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:autofillHints=""
+        android:ems="10"
+        android:hint="@string/duration_days"
+        android:inputType="number"
+        android:textAlignment="center" />
+
+    <Button
+        android:id="@+id/setDates"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Set start and end date" />
+
+    <EditText
+        android:id="@+id/opportunityLocation"
+        tools:targetApi="o"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:autofillHints=""
+        android:ems="10"
+        android:hint="@string/location"
+        android:inputType="textPersonName"
+        android:textAlignment="center" />
+
+    <MultiAutoCompleteTextView
+        android:id="@+id/opportunityDescription"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center|top"
+        android:hint="@string/description" />
+
+    <Button
+        android:id="@+id/saveOpportunityBtn"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="@string/save" />
+
+</LinearLayout>
+

@@ -103,4 +103,11 @@
     <string name="title_applications">Applications</string>
     <string name="your_opportunities">Your Opportunities</string>
     <string name="days">Day(s)</string>
+    <string name="opportunity_fields">Opportunity Fields</string>
+    <string name="description">Description</string>
+    <string name="location">Location</string>
+    <string name="duration_days">Duration (days)</string>
+    <string name="add_opportunity">Add Opportunity</string>
+    <string name="opportunity_add">Opportunity Added Successfully :)</string>
+    <string name="set_dates">Please select dates first</string>
 </resources>

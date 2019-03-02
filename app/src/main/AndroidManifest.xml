@@ -10,11 +10,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".OpportunityEditorActivity"></activity>
+
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -24,14 +23,21 @@
         <activity
             android:name=".VolunteerHomeActivity"
             android:label="@string/volunteer_home"
-            android:theme="@style/VolunteerHome"></activity>
+            android:theme="@style/VolunteerHome">
+        </activity>
         <activity
             android:name=".HospitalEditorActivity"
-            android:parentActivityName=".MainActivity"></activity>
+            android:parentActivityName=".MainActivity">
+        </activity>
         <activity
             android:name=".HospitalHomeActivity"
             android:label="@string/hospital_home"
-            android:theme="@style/HospitalHome"></activity>
+            android:theme="@style/HospitalHome">
+        </activity>
+        <activity
+            android:name=".OpportunityEditorActivity"
+            android:parentActivityName=".HospitalHomeActivity">
+        </activity>
     </application>
 
 </manifest>

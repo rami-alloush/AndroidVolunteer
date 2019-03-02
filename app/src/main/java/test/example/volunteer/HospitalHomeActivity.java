@@ -87,9 +87,10 @@ public class HospitalHomeActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent addPatient = new Intent(getBaseContext(), AddDoctorActivity.class);
-//                startActivity(addPatient);
-                Toast.makeText(HospitalHomeActivity.this, "This will add new Opportunity in next phase", Toast.LENGTH_SHORT).show();
+                Intent addOpportunity = new Intent(getBaseContext(), OpportunityEditorActivity.class);
+                addOpportunity.putExtra("editMode", false);
+                startActivity(addOpportunity);
+//                Toast.makeText(HospitalHomeActivity.this, "This will add new Opportunity in next phase", Toast.LENGTH_SHORT).show();
             }
         });
 
