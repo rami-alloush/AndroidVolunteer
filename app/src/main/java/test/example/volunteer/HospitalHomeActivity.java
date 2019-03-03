@@ -90,7 +90,6 @@ public class HospitalHomeActivity extends AppCompatActivity {
                 Intent addOpportunity = new Intent(getBaseContext(), OpportunityEditorActivity.class);
                 addOpportunity.putExtra("editMode", false);
                 startActivity(addOpportunity);
-//                Toast.makeText(HospitalHomeActivity.this, "This will add new Opportunity in next phase", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -111,9 +110,9 @@ public class HospitalHomeActivity extends AppCompatActivity {
             // getItem is called to instantiate the fragment for the given page.
             // Return a ServicesFragment (defined as a static inner class below).
             switch (position) {
+                case 0:
+                    return OpportunityFragment.newInstance("Hospital", 0);
                 default:
-                    return new OpportunityFragment();
-                case 1:
                     return new BlankFragment();
             }
         }
@@ -132,7 +131,7 @@ public class HospitalHomeActivity extends AppCompatActivity {
                 case 1:
                     return getString(R.string.title_applications);
                 default:
-                    return "";
+                    return "New Frag";
             }
         }
     }

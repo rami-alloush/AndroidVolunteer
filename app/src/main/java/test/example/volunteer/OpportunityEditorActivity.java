@@ -16,12 +16,13 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -48,7 +49,7 @@ public class OpportunityEditorActivity extends AppCompatActivity {
     private Timestamp endDate;
     private Boolean completed;
     private String hospitalUID;
-    private String applicantsUIDs;
+    private ArrayList<String> applicantsUIDs;
 
     //defining firebaseauth object
     private FirebaseAuth firebaseAuth;
@@ -127,6 +128,12 @@ public class OpportunityEditorActivity extends AppCompatActivity {
             }
         });
 
+        // Code to add Applications
+//        FirebaseFirestore db = FirebaseFirestore.getInstance();
+//        DocumentReference washingtonRef = db.collection("opportunities").document("RtMVMNGg4lWSgyN8ZreA");
+//        // Atomically add a new region to the "regions" array field.
+//        washingtonRef.update("applicantsUIDs", FieldValue.arrayUnion("UID"));
+
     }
 
     // Menu Methods
@@ -146,8 +153,8 @@ public class OpportunityEditorActivity extends AppCompatActivity {
                 return true;
             case android.R.id.home:
                 if (!editMode) {
-                    Intent intent = new Intent(getBaseContext(), MainActivity.class);
-                    startActivity(intent);
+//                    Intent intent = new Intent(getBaseContext(), MainActivity.class);
+//                    startActivity(intent);
                     finish();
                 } else {
                     break;
@@ -171,7 +178,7 @@ public class OpportunityEditorActivity extends AppCompatActivity {
         String durationString =durationView.getText().toString().trim();
         completed = false;
         hospitalUID = firebaseAuth.getCurrentUser().getUid();
-        applicantsUIDs = firebaseAuth.getUid();
+        applicantsUIDs =new ArrayList<>();
 
         // Check if all the fields in the editor are filled
         if (TextUtils.isEmpty(title) || TextUtils.isEmpty(description)

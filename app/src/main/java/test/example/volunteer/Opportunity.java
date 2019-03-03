@@ -4,6 +4,8 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import com.google.firebase.Timestamp;
 
+import java.util.ArrayList;
+
 public class Opportunity implements Parcelable {
     private String title;
     private String description;
@@ -13,13 +15,13 @@ public class Opportunity implements Parcelable {
     private Timestamp endDate;
     private Boolean completed;
     private String hospitalUID;
-    private String applicantsUIDs;
+    private ArrayList<String> applicantsUIDs;
     private String mUID;
 
     public Opportunity() {
     } // Needed for Firestore
 
-    public Opportunity(String title, String description, String location, int duration, Timestamp startDate, Timestamp endDate, Boolean completed, String hospitalUID, String applicantsUIDs) {
+    public Opportunity(String title, String description, String location, int duration, Timestamp startDate, Timestamp endDate, Boolean completed, String hospitalUID, ArrayList applicantsUIDs) {
         this.title = title;
         this.description = description;
         this.location = location;
@@ -95,11 +97,11 @@ public class Opportunity implements Parcelable {
         this.hospitalUID = hospitalUID;
     }
 
-    public String getApplicantsUIDs() {
+    public ArrayList<String> getApplicantsUIDs() {
         return applicantsUIDs;
     }
 
-    public void setApplicantsUIDs(String applicantsUIDs) {
+    public void setApplicantsUIDs(ArrayList<String> applicantsUIDs) {
         this.applicantsUIDs = applicantsUIDs;
     }
 
@@ -121,7 +123,12 @@ public class Opportunity implements Parcelable {
         byte completedVal = in.readByte();
         completed = completedVal == 0x02 ? null : completedVal != 0x00;
         hospitalUID = in.readString();
-        applicantsUIDs = in.readString();
+        if (in.readByte() == 0x01) {
+            applicantsUIDs = new ArrayList<>();
+            in.readList(applicantsUIDs, String.class.getClassLoader());
+        } else {
+            applicantsUIDs = null;
+        }
         mUID = in.readString();
     }
 
@@ -144,7 +151,12 @@ public class Opportunity implements Parcelable {
             dest.writeByte((byte) (completed ? 0x01 : 0x00));
         }
         dest.writeString(hospitalUID);
-        dest.writeString(applicantsUIDs);
+        if (applicantsUIDs == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeList(applicantsUIDs);
+        }
         dest.writeString(mUID);
     }
 

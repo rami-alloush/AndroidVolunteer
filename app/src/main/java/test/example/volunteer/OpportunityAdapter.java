@@ -16,7 +16,6 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Locale;
 
 @SuppressWarnings("unchecked")
@@ -56,7 +55,7 @@ public class OpportunityAdapter extends FirestoreRecyclerAdapter<Opportunity, Op
                 public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                     if (b) {
                         opportunity.setCompleted(true);
-                        FirebaseFirestore.getInstance().collection("Opportunities")
+                        FirebaseFirestore.getInstance().collection("opportunities")
                                 .document(getSnapshots().getSnapshot(current).getId())
                                 .set(opportunity)
                                 .addOnSuccessListener(new OnSuccessListener<Void>() {

@@ -110,4 +110,6 @@
     <string name="add_opportunity">Add Opportunity</string>
     <string name="opportunity_add">Opportunity Added Successfully :)</string>
     <string name="set_dates">Please select dates first</string>
+    <string name="completed_opportunities">Completed Opportunities</string>
+    <string name="new_opportunities">New Opportunities</string>
 </resources>

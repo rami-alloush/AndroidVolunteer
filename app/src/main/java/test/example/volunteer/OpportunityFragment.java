@@ -17,8 +17,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
-import java.util.Objects;
-
 public class OpportunityFragment extends Fragment {
 
     private static final String ARG_COLUMN_COUNT = "column-count";
@@ -74,7 +72,7 @@ public class OpportunityFragment extends Fragment {
         }
 
         // Using FirebaseUI
-        String currentUID = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
+        String currentUID = FirebaseAuth.getInstance().getUid();
         switch (mUserType) {
             case "Volunteer":
                 query = FirebaseFirestore.getInstance()
@@ -86,21 +84,21 @@ public class OpportunityFragment extends Fragment {
                 servicesHeader.setText(R.string.services_you_received_not_evaluated);
                 canRate = true;
                 break;
-            case "doctorCompleted":
+            case "HospitalCompleted":
                 query = FirebaseFirestore.getInstance()
                         .collection("opportunities")
                         .whereEqualTo("completed", true)
                         .whereEqualTo("doctorUID", currentUID)
                         .limit(50);
-                servicesHeader.setText(R.string.completed_services);
+                servicesHeader.setText(R.string.completed_opportunities);
                 break;
             case "Hospital":
                 query = FirebaseFirestore.getInstance()
                         .collection("opportunities")
-//                        .whereEqualTo("completed", false)
-//                        .whereEqualTo("doctorUID", currentUID)
+                        .whereEqualTo("completed", false)
+                        .whereEqualTo("hospitalUID", currentUID)
                         .limit(50);
-                servicesHeader.setText(R.string.new_services);
+                servicesHeader.setText(R.string.new_opportunities);
                 newOpportunity = true;
                 break;
             default:
