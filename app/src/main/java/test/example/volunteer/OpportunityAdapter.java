@@ -1,5 +1,6 @@
 package test.example.volunteer;
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -21,14 +22,15 @@ import java.util.Locale;
 @SuppressWarnings("unchecked")
 public class OpportunityAdapter extends FirestoreRecyclerAdapter<Opportunity, OpportunityAdapter.OpportunityHolder> {
 
+    private View mView;
     private Context context;
     private Boolean canApply;
-    private Boolean newOpportunity;
+    private Boolean canMarkComplete;
 
-    OpportunityAdapter(@NonNull FirestoreRecyclerOptions options, Boolean canApply, Boolean newOpportunity) {
+    OpportunityAdapter(@NonNull FirestoreRecyclerOptions options, Boolean canApply, Boolean canMarkComplete) {
         super(options);
         this.canApply = canApply;
-        this.newOpportunity = newOpportunity;
+        this.canMarkComplete = canMarkComplete;
     }
 
     @Override
@@ -40,15 +42,12 @@ public class OpportunityAdapter extends FirestoreRecyclerAdapter<Opportunity, Op
 
         holder.opportunityTitle.setText(model.getTitle());
         holder.opportunityDescription.setText(model.getDescription());
+        holder.opportunityLocation.setText(String.valueOf(model.getLocation()));
+        holder.opportunityDuration.setText(String.valueOf(model.getDuration()));
         holder.opportunityStartDate.setText(sfd.format(model.getStartDate().toDate()));
         holder.opportunityEndDate.setText(sfd.format(model.getEndDate().toDate()));
-        holder.opportunityDuration.setText(String.valueOf(model.getDuration()));
 
-        if (canApply) {
-//            holder.opportunityEndDate.setIsIndicator(false);
-        }
-
-        if (newOpportunity) {
+        if (canMarkComplete) {
             holder.opportunityComplete.setVisibility(View.VISIBLE);
             holder.opportunityComplete.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
@@ -69,12 +68,16 @@ public class OpportunityAdapter extends FirestoreRecyclerAdapter<Opportunity, Op
             });
         }
         
-//        holder.mView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Toast.makeText(context, "Opportunity No. " + (current + 1), Toast.LENGTH_SHORT).show();
-//            }
-//        });
+        mView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (canApply) {
+                    Intent intent = new Intent(context, ApplyActivity.class);
+                    intent.putExtra("opportunity", opportunity);
+                    context.startActivity(intent);
+                }
+            }
+        });
     }
 
     @NonNull
@@ -82,6 +85,7 @@ public class OpportunityAdapter extends FirestoreRecyclerAdapter<Opportunity, Op
     public OpportunityHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.fragment_opportunity_item, parent, false);
+        mView = view;
         context = parent.getContext();
         return new OpportunityHolder(view);
     }
@@ -89,6 +93,7 @@ public class OpportunityAdapter extends FirestoreRecyclerAdapter<Opportunity, Op
     class OpportunityHolder extends RecyclerView.ViewHolder {
         private TextView opportunityTitle;
         private TextView opportunityDescription;
+        private TextView opportunityLocation;
         private TextView opportunityDuration;
         private TextView opportunityStartDate;
         private TextView opportunityEndDate;
@@ -98,6 +103,7 @@ public class OpportunityAdapter extends FirestoreRecyclerAdapter<Opportunity, Op
             super(view);
             opportunityTitle = view.findViewById(R.id.opportunityTitle);
             opportunityDescription = view.findViewById(R.id.opportunityDescription);
+            opportunityLocation = view.findViewById(R.id.opportunityLocation);
             opportunityDuration = view.findViewById(R.id.opportunityDuration);
             opportunityStartDate = view.findViewById(R.id.opportunityStartDate);
             opportunityEndDate = view.findViewById(R.id.opportunityEndDate);

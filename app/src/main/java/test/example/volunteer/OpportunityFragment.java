@@ -24,9 +24,8 @@ public class OpportunityFragment extends Fragment {
     private int mColumnCount = 1;
     private String mUserType = "default";
     private OpportunityAdapter adapter;
-    private Query query;
-    private Boolean canRate = false;
-    private Boolean newOpportunity = false;
+    private Boolean canApply = false;
+    private Boolean canMarkComplete = false;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -73,17 +72,17 @@ public class OpportunityFragment extends Fragment {
 
         // Using FirebaseUI
         String currentUID = FirebaseAuth.getInstance().getUid();
+        Query query;
         switch (mUserType) {
             case "Volunteer":
                 query = FirebaseFirestore.getInstance()
                         .collection("opportunities")
-//                        .whereEqualTo("rate", null)
-//                        .whereEqualTo("completed", true)
-//                        .whereEqualTo("patientUID", currentUID)
+                        .whereEqualTo("completed", false)
                         .limit(50);
-                servicesHeader.setText(R.string.services_you_received_not_evaluated);
-                canRate = true;
+                servicesHeader.setText(R.string.open_opportunities);
+                canApply = true;
                 break;
+                
             case "HospitalCompleted":
                 query = FirebaseFirestore.getInstance()
                         .collection("opportunities")
@@ -92,6 +91,7 @@ public class OpportunityFragment extends Fragment {
                         .limit(50);
                 servicesHeader.setText(R.string.completed_opportunities);
                 break;
+                
             case "Hospital":
                 query = FirebaseFirestore.getInstance()
                         .collection("opportunities")
@@ -99,8 +99,9 @@ public class OpportunityFragment extends Fragment {
                         .whereEqualTo("hospitalUID", currentUID)
                         .limit(50);
                 servicesHeader.setText(R.string.new_opportunities);
-                newOpportunity = true;
+                canMarkComplete = true;
                 break;
+                
             default:
                 query = FirebaseFirestore.getInstance()
                         .collection("opportunities")
@@ -116,7 +117,7 @@ public class OpportunityFragment extends Fragment {
                 .setQuery(query, Opportunity.class)
                 .build();
 
-        adapter = new OpportunityAdapter(options, canRate, newOpportunity);
+        adapter = new OpportunityAdapter(options, canApply, canMarkComplete);
         recyclerView.setAdapter(adapter);
 
         return view;

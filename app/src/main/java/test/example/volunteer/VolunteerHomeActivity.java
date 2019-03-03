@@ -77,9 +77,9 @@ public class VolunteerHomeActivity extends AppCompatActivity {
             // getItem is called to instantiate the fragment for the given page.
             // Return a ServicesFragment (defined as a static inner class below).
             switch (position) {
+                case 0:
+                    return OpportunityFragment.newInstance("Volunteer", 0);
                 default:
-                    return new BlankFragment();
-                case 1:
                     return new BlankFragment();
             }
         }
@@ -94,9 +94,9 @@ public class VolunteerHomeActivity extends AppCompatActivity {
         public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 0:
-                    return getString(R.string.title_home);
-                case 1:
                     return getString(R.string.title_opportunities);
+                case 1:
+                    return getString(R.string.title_applications);
                 default:
                     return "";
             }
