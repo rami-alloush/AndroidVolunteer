@@ -24,10 +24,15 @@
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="HospitalHome" parent="AppTheme.NoActionBar">
+    <style name="Hospital" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="colorPrimary">@color/hPrimaryColor</item>
         <item name="colorPrimaryDark">@color/hPrimaryDarkColor</item>
         <item name="colorAccent">@color/hSecondaryColor</item>
+    </style>
+
+    <style name="HospitalHome" parent="Hospital">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />

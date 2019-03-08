@@ -127,13 +127,6 @@ public class OpportunityEditorActivity extends AppCompatActivity {
                 myStartDate.show();
             }
         });
-
-        // Code to add Applications
-//        FirebaseFirestore db = FirebaseFirestore.getInstance();
-//        DocumentReference washingtonRef = db.collection("opportunities").document("RtMVMNGg4lWSgyN8ZreA");
-//        // Atomically add a new region to the "regions" array field.
-//        washingtonRef.update("applicantsUIDs", FieldValue.arrayUnion("UID"));
-
     }
 
     // Menu Methods

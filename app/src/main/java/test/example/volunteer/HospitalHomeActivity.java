@@ -112,6 +112,10 @@ public class HospitalHomeActivity extends AppCompatActivity {
             switch (position) {
                 case 0:
                     return OpportunityFragment.newInstance("Hospital", 0);
+                case 1:
+                    return OpportunityFragment.newInstance("HospitalCompleted", 0);
+                case 2:
+                    return OpportunityFragment.newInstance("HospitalApplications", 0);
                 default:
                     return new BlankFragment();
             }
@@ -119,16 +123,18 @@ public class HospitalHomeActivity extends AppCompatActivity {
 
         @Override
         public int getCount() {
-            // Show 2 total pages.
-            return 2;
+            // Show 3 total pages.
+            return 3;
         }
 
         @Override
         public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 0:
-                    return getString(R.string.title_opportunities);
+                    return getString(R.string.title_opportunities_open);
                 case 1:
+                    return getString(R.string.title_opportunities_completed);
+                case 2:
                     return getString(R.string.title_applications);
                 default:
                     return "New Frag";

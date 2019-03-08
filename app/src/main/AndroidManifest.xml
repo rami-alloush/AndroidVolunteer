@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".ApplyActivity"></activity>
+
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,17 +26,29 @@
         <activity
             android:name=".VolunteerHomeActivity"
             android:label="@string/volunteer_home"
-            android:theme="@style/VolunteerHome"></activity>
+            android:theme="@style/VolunteerHome" />
+        <activity
+            android:name=".ApplyActivity"
+            android:label="@string/apply_for_opportunity"
+            android:parentActivityName=".VolunteerHomeActivity"
+            android:theme="@style/Volunteer" />
         <activity
             android:name=".HospitalEditorActivity"
-            android:parentActivityName=".MainActivity"></activity>
+            android:parentActivityName=".MainActivity" />
         <activity
             android:name=".HospitalHomeActivity"
             android:label="@string/hospital_home"
-            android:theme="@style/HospitalHome"></activity>
+            android:theme="@style/HospitalHome" />
         <activity
             android:name=".OpportunityEditorActivity"
-            android:parentActivityName=".HospitalHomeActivity"></activity>
+            android:parentActivityName=".HospitalHomeActivity"
+            android:theme="@style/Hospital" />
+        <activity
+            android:name=".ViewApplicantsActivity"
+            android:label="@string/applied_volunteers"
+            android:parentActivityName=".HospitalHomeActivity"
+            android:theme="@style/Hospital"/>
+
     </application>
 
 </manifest>

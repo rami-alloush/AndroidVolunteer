@@ -1,8 +1,10 @@
 package test.example.volunteer;
+
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,9 +16,11 @@ import android.widget.Toast;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Locale;
 
 @SuppressWarnings("unchecked")
@@ -25,16 +29,58 @@ public class OpportunityAdapter extends FirestoreRecyclerAdapter<Opportunity, Op
     private View mView;
     private Context context;
     private Boolean canApply;
+    private Boolean canView;
+    private Boolean canViewApplicants;
     private Boolean canMarkComplete;
 
-    OpportunityAdapter(@NonNull FirestoreRecyclerOptions options, Boolean canApply, Boolean canMarkComplete) {
+    // data is passed into the constructor
+    OpportunityAdapter(@NonNull FirestoreRecyclerOptions options, Boolean canApply, Boolean canView, Boolean canViewApplicants, Boolean canMarkComplete) {
         super(options);
         this.canApply = canApply;
+        this.canView = canView;
+        this.canViewApplicants = canViewApplicants;
         this.canMarkComplete = canMarkComplete;
     }
 
+    // If needed to change ViewType
+    @Override
+    public int getItemViewType(int position) {
+        if (canApply) {
+            Opportunity opportunity = getSnapshots().getSnapshot(position).toObject(Opportunity.class);
+            ArrayList<String> getApplicantsUIDs = opportunity.getApplicantsUIDs();
+            if (getApplicantsUIDs != null) {
+                for (int x = 0; x < getApplicantsUIDs.size(); x++) {
+                    if (getApplicantsUIDs.get(x).equals(FirebaseAuth.getInstance().getUid())) {
+                        return 1;
+                    }
+                }
+            }
+        }
+        return super.getItemViewType(position);
+    }
+
+    // Inflates the row layout from xml when needed (and based on the ViewType)
+    @NonNull
+    @Override
+    public OpportunityHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        if(viewType == 1) {
+            mView = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.empty_item, parent, false);
+        } else {
+            mView = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.fragment_opportunity_item, parent, false);
+        }
+        context = parent.getContext();
+        return new OpportunityHolder(mView, viewType);
+    }
+
+    // Binds the data to the Views in each row
     @Override
     protected void onBindViewHolder(@NonNull OpportunityHolder holder, int position, @NonNull Opportunity model) {
+        if (holder.getItemViewType() == 1) {
+            return;
+        }
+
         final int current = position;
         final Opportunity opportunity = model;
 
@@ -47,6 +93,27 @@ public class OpportunityAdapter extends FirestoreRecyclerAdapter<Opportunity, Op
         holder.opportunityStartDate.setText(sfd.format(model.getStartDate().toDate()));
         holder.opportunityEndDate.setText(sfd.format(model.getEndDate().toDate()));
 
+        // Set the On Click Listener Actions
+        mView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (canApply || canView) {
+                    opportunity.setUID(getSnapshots().getSnapshot(current).getId());
+                    Intent intent = new Intent(context, ApplyActivity.class);
+                    intent.putExtra("opportunity", opportunity);
+                    intent.putExtra("canView", canView);
+                    context.startActivity(intent);
+                } else if (canViewApplicants) {
+                    opportunity.setUID(getSnapshots().getSnapshot(current).getId());
+                    Intent intent = new Intent(context, ViewApplicantsActivity.class);
+                    intent.putExtra("opportunity", opportunity);
+                    context.startActivity(intent);
+                }
+
+            }
+        });
+
+        // Set ability to mark opportunity complete
         if (canMarkComplete) {
             holder.opportunityComplete.setVisibility(View.VISIBLE);
             holder.opportunityComplete.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -60,36 +127,17 @@ public class OpportunityAdapter extends FirestoreRecyclerAdapter<Opportunity, Op
                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void aVoid) {
-                                        Toast.makeText(context, context.getString(R.string.opportunity_status_updated), Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(context, context.getString(R.string.opportunity_status_updated),
+                                                Toast.LENGTH_SHORT).show();
                                     }
                                 });
                     }
                 }
             });
         }
-        
-        mView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (canApply) {
-                    Intent intent = new Intent(context, ApplyActivity.class);
-                    intent.putExtra("opportunity", opportunity);
-                    context.startActivity(intent);
-                }
-            }
-        });
     }
 
-    @NonNull
-    @Override
-    public OpportunityHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_opportunity_item, parent, false);
-        mView = view;
-        context = parent.getContext();
-        return new OpportunityHolder(view);
-    }
-
+    // Stores and recycles views as they are scrolled off screen
     class OpportunityHolder extends RecyclerView.ViewHolder {
         private TextView opportunityTitle;
         private TextView opportunityDescription;
@@ -99,7 +147,7 @@ public class OpportunityAdapter extends FirestoreRecyclerAdapter<Opportunity, Op
         private TextView opportunityEndDate;
         private CheckBox opportunityComplete;
 
-        OpportunityHolder(View view) {
+        OpportunityHolder(View view, int viewType) {
             super(view);
             opportunityTitle = view.findViewById(R.id.opportunityTitle);
             opportunityDescription = view.findViewById(R.id.opportunityDescription);

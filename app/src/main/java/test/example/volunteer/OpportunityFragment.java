@@ -25,6 +25,8 @@ public class OpportunityFragment extends Fragment {
     private String mUserType = "default";
     private OpportunityAdapter adapter;
     private Boolean canApply = false;
+    private Boolean canView = false;
+    private Boolean canViewApplicants = false;
     private Boolean canMarkComplete = false;
 
     /**
@@ -82,31 +84,52 @@ public class OpportunityFragment extends Fragment {
                 servicesHeader.setText(R.string.open_opportunities);
                 canApply = true;
                 break;
-                
-            case "HospitalCompleted":
+
+            case "VolunteerApplications":
                 query = FirebaseFirestore.getInstance()
                         .collection("opportunities")
-                        .whereEqualTo("completed", true)
-                        .whereEqualTo("doctorUID", currentUID)
+                        .whereEqualTo("completed", false)
+                        .whereArrayContains("applicantsUIDs", currentUID)
                         .limit(50);
-                servicesHeader.setText(R.string.completed_opportunities);
+                servicesHeader.setText(R.string.your_applications);
+                canView = true;
                 break;
-                
+
             case "Hospital":
                 query = FirebaseFirestore.getInstance()
                         .collection("opportunities")
                         .whereEqualTo("completed", false)
                         .whereEqualTo("hospitalUID", currentUID)
                         .limit(50);
-                servicesHeader.setText(R.string.new_opportunities);
+                servicesHeader.setText(R.string.your_open_opportunities);
                 canMarkComplete = true;
                 break;
-                
+
+            case "HospitalCompleted":
+                query = FirebaseFirestore.getInstance()
+                        .collection("opportunities")
+                        .whereEqualTo("completed", true)
+                        .whereEqualTo("hospitalUID", currentUID)
+                        .limit(50);
+                servicesHeader.setText(R.string.your_completed_opportunities);
+                break;
+
+            case "HospitalApplications":
+                query = FirebaseFirestore.getInstance()
+                        .collection("opportunities")
+                        .whereEqualTo("completed", false)
+                        .whereEqualTo("hasApplications", true)
+                        .whereEqualTo("hospitalUID", currentUID)
+                        .limit(50);
+                servicesHeader.setText(R.string.your_applications);
+                canViewApplicants = true;
+                break;
+
             default:
                 query = FirebaseFirestore.getInstance()
                         .collection("opportunities")
                         .limit(50);
-                servicesHeader.setText(R.string.your_opportunities);
+                servicesHeader.setText(R.string.all_opportunities);
                 break;
         }
 
@@ -117,7 +140,7 @@ public class OpportunityFragment extends Fragment {
                 .setQuery(query, Opportunity.class)
                 .build();
 
-        adapter = new OpportunityAdapter(options, canApply, canMarkComplete);
+        adapter = new OpportunityAdapter(options, canApply, canView, canViewApplicants, canMarkComplete);
         recyclerView.setAdapter(adapter);
 
         return view;

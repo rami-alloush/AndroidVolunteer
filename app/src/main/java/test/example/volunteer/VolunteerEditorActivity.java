@@ -16,6 +16,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -55,6 +56,8 @@ public class VolunteerEditorActivity extends AppCompatActivity {
     private EditText degreeView;
     private EditText skillsView;
     private ImageView volunteerCVview;
+    private Button loadImage;
+    private Button setChanges;
     private Bitmap bitmap;
 
     private String FName;
@@ -73,6 +76,9 @@ public class VolunteerEditorActivity extends AppCompatActivity {
     private FirebaseUser newUser;
     private int RESULT_LOAD_IMG = 100;
     private  Boolean editMode;
+    private  Boolean viewMode;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,14 +101,7 @@ public class VolunteerEditorActivity extends AppCompatActivity {
         //initializing firebase auth object
         firebaseAuth = FirebaseAuth.getInstance();
 
-        editMode = Objects.requireNonNull(getIntent().getExtras()).getBoolean("editMode");
-        if (editMode) {
-            setTitle(getString(R.string.title_edit_profile));
-        } else {
-            setTitle(getString(R.string.register_volunteer));
-        }
-
-        Button loadImage = findViewById(R.id.loadCV);
+        loadImage = findViewById(R.id.loadCV);
         loadImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -114,13 +113,29 @@ public class VolunteerEditorActivity extends AppCompatActivity {
             }
         });
 
-        Button setChanges = findViewById(R.id.saveVolunteerBtn);
+        setChanges = findViewById(R.id.saveVolunteerBtn);
         setChanges.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 registerUser();
             }
         });
+
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            editMode = extras.getBoolean("editMode");
+            viewMode = extras.getBoolean("viewMode");
+        }
+
+        if (editMode) {
+            setTitle(getString(R.string.title_edit_profile));
+        } else if (viewMode) {
+            setTitle(getString(R.string.volunteer_profile));
+            Volunteer volunteer = extras.getParcelable("volunteer");
+            populateUserData(volunteer);
+        } else {
+            setTitle(getString(R.string.register_volunteer));
+        }
     }
 
     @Override
@@ -155,9 +170,11 @@ public class VolunteerEditorActivity extends AppCompatActivity {
     // Menu Methods
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuItem item = menu.add(Menu.NONE, 0, Menu.NONE, getString(R.string.save));
-        item.setIcon(android.R.drawable.ic_menu_save);
-        item.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+        if (!viewMode) {
+            MenuItem item = menu.add(Menu.NONE, 0, Menu.NONE, getString(R.string.save));
+            item.setIcon(android.R.drawable.ic_menu_save);
+            item.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+        }
         return true;
     }
 
@@ -168,18 +185,18 @@ public class VolunteerEditorActivity extends AppCompatActivity {
                 registerUser();
                 return true;
             case android.R.id.home:
-                if (!editMode) {
-                    Intent intent = new Intent(getBaseContext(), MainActivity.class);
-                    startActivity(intent);
-                    finish();
-                } else {
-                    break;
-                }
+//                if (!editMode) {
+//                    Intent intent = new Intent(getBaseContext(), MainActivity.class);
+//                    startActivity(intent);
+//                    finish();
+//                } else {
+//                    break;
+//                }
+                super.onBackPressed();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
-        return super.onOptionsItemSelected(item);
     }
 
     /*
@@ -296,6 +313,43 @@ public class VolunteerEditorActivity extends AppCompatActivity {
         startActivity(homeIntent);
     }
 
+    private void populateUserData(Volunteer volunteer) {
+        firstNameView.setEnabled(false);
+        firstNameView.setText(volunteer.getFname());
+
+        lastNameView.setEnabled(false);
+        lastNameView.setText(volunteer.getLname());
+
+        emailView.setEnabled(false);
+        emailView.setText(volunteer.getEmail());
+
+        passwordView.setVisibility(View.GONE);
+        TextView volunteerPasswordLabel = findViewById(R.id.volunteerPasswordLabel);
+        volunteerPasswordLabel.setVisibility(View.INVISIBLE);
+
+        mobileView.setEnabled(false);
+        mobileView.setText(volunteer.getMobile());
+
+        ageView.setEnabled(false);
+        ageView.setText(volunteer.getAge());
+
+        genderView.setVisibility(View.GONE);
+
+        cityView.setEnabled(false);
+        cityView.setText(volunteer.getCity());
+
+        degreeView.setEnabled(false);
+        degreeView.setText(volunteer.getDegree());
+
+        TextView skillsLabel = findViewById(R.id.skillsLabel);
+        skillsLabel.setVisibility(View.GONE);
+        skillsView.setEnabled(false);
+        skillsView.setText(volunteer.getSkills());
+
+        loadImage.setVisibility(View.GONE);
+        setChanges.setVisibility(View.GONE);
+    }
+
     /**
      * method is used for checking valid email id format.
      */
@@ -306,9 +360,5 @@ public class VolunteerEditorActivity extends AppCompatActivity {
         return matcher.matches();
     }
 
-    @Override
-    public void onBackPressed() {
-        moveTaskToBack(true);
-    }
 
 }

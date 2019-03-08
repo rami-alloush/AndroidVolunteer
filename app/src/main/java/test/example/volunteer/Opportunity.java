@@ -16,7 +16,8 @@ public class Opportunity implements Parcelable {
     private Boolean completed;
     private String hospitalUID;
     private ArrayList<String> applicantsUIDs;
-    private String mUID;
+    private Boolean hasApplications;
+    private String UID;
 
     public Opportunity() {
     } // Needed for Firestore
@@ -105,12 +106,20 @@ public class Opportunity implements Parcelable {
         this.applicantsUIDs = applicantsUIDs;
     }
 
-    public String getmUID() {
-        return mUID;
+    public Boolean getHasApplications() {
+        return hasApplications;
     }
 
-    public void setmUID(String mUID) {
-        this.mUID = mUID;
+    public void setHasApplications(Boolean hasApplications) {
+        this.hasApplications = hasApplications;
+    }
+
+    public String getUID() {
+        return UID;
+    }
+
+    public void setUID(String UID) {
+        this.UID = UID;
     }
 
     protected Opportunity(Parcel in) {
@@ -129,7 +138,9 @@ public class Opportunity implements Parcelable {
         } else {
             applicantsUIDs = null;
         }
-        mUID = in.readString();
+        byte hasApplicationsVal = in.readByte();
+        hasApplications = hasApplicationsVal == 0x02 ? null : hasApplicationsVal != 0x00;
+        UID = in.readString();
     }
 
     @Override
@@ -157,7 +168,12 @@ public class Opportunity implements Parcelable {
             dest.writeByte((byte) (0x01));
             dest.writeList(applicantsUIDs);
         }
-        dest.writeString(mUID);
+        if (hasApplications == null) {
+            dest.writeByte((byte) (0x02));
+        } else {
+            dest.writeByte((byte) (hasApplications ? 0x01 : 0x00));
+        }
+        dest.writeString(UID);
     }
 
     @SuppressWarnings("unused")

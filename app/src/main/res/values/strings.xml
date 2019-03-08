@@ -110,7 +110,19 @@
     <string name="add_opportunity">Add Opportunity</string>
     <string name="opportunity_add">Opportunity Added Successfully :)</string>
     <string name="set_dates">Please select dates first</string>
-    <string name="completed_opportunities">Completed Opportunities</string>
+    <string name="your_completed_opportunities">Your Completed Opportunities</string>
     <string name="new_opportunities">New Opportunities</string>
     <string name="open_opportunities">Open Opportunities</string>
+    <string name="apply_for_opportunity">Apply for Opportunity</string>
+    <string name="from">From</string>
+    <string name="to">to</string>
+    <string name="application_submitted">Application Submitted Successfully :)</string>
+    <string name="your_applications">Your Applications</string>
+    <string name="your_application">Your Application</string>
+    <string name="all_opportunities">All Opportunities</string>
+    <string name="your_open_opportunities">Your Open Opportunities</string>
+    <string name="title_opportunities_open">Opportunities (Open)</string>
+    <string name="title_opportunities_completed">Opportunities (Completed)</string>
+    <string name="applied_volunteers">Applied Volunteers</string>
+    <string name="volunteer_profile">Volunteer Profile</string>
 </resources>

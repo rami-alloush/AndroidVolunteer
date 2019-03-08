@@ -80,7 +80,7 @@ public class VolunteerHomeActivity extends AppCompatActivity {
                 case 0:
                     return OpportunityFragment.newInstance("Volunteer", 0);
                 default:
-                    return new BlankFragment();
+                    return OpportunityFragment.newInstance("VolunteerApplications", 0);
             }
         }
 
