@@ -50,7 +50,7 @@ public class OpportunityEditorActivity extends AppCompatActivity {
     private Timestamp endDate;
     private Boolean completed;
     private String hospitalUID;
-    private HashMap<String, Boolean> applicantsUIDs;
+    private HashMap<String, Integer> applicantsUIDs;
 
     //defining firebaseauth object
     private FirebaseAuth firebaseAuth;

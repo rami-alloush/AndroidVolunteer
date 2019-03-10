@@ -15,7 +15,7 @@ public class Opportunity implements Parcelable {
     private Timestamp endDate;
     private Boolean completed;
     private String hospitalUID;
-    private HashMap<String, Boolean> applicantsUIDs;
+    private HashMap<String, Integer> applicantsUIDs;
     private Boolean hasApplications;
     private String UID;
 
@@ -98,11 +98,11 @@ public class Opportunity implements Parcelable {
         this.hospitalUID = hospitalUID;
     }
 
-    public HashMap<String, Boolean> getApplicantsUIDs() {
+    public HashMap<String, Integer> getApplicantsUIDs() {
         return applicantsUIDs;
     }
 
-    public void setApplicantsUIDs(HashMap<String, Boolean> applicantsUIDs) {
+    public void setApplicantsUIDs(HashMap<String, Integer> applicantsUIDs) {
         this.applicantsUIDs = applicantsUIDs;
     }
 

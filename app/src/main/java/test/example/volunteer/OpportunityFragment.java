@@ -7,9 +7,12 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
@@ -21,13 +24,18 @@ public class OpportunityFragment extends Fragment {
 
     private static final String ARG_COLUMN_COUNT = "column-count";
     private static final String ARG_USER_TYPE = "user-type";
+    private static final String TAG = "OpportunityFragmentTAG";
     private int mColumnCount = 1;
     private String mUserType = "default";
+    private Query query;
     private OpportunityAdapter adapter;
+    private TextView servicesHeader;
+    private Spinner spinnerAppStatus;
     private Boolean canApply = false;
     private Boolean canView = false;
     private Boolean canViewApplicants = false;
     private Boolean canMarkComplete = false;
+    private Integer appStatus = null;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -60,8 +68,29 @@ public class OpportunityFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_opportunity, container, false);
-        RecyclerView recyclerView = view.findViewById(R.id.servicesRecyclerView);
-        TextView servicesHeader = view.findViewById(R.id.opportunityListHeader);
+        final RecyclerView recyclerView = view.findViewById(R.id.servicesRecyclerView);
+        servicesHeader = view.findViewById(R.id.opportunityListHeader);
+        spinnerAppStatus = view.findViewById(R.id.spinnerAppStatus);
+        spinnerAppStatus.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                appStatus = position;
+                updateParams();
+                FirestoreRecyclerOptions options = new FirestoreRecyclerOptions.Builder<Opportunity>()
+                        .setQuery(query, Opportunity.class)
+                        .build();
+                adapter.stopListening();
+                adapter = new OpportunityAdapter(options, canApply, canView, canViewApplicants, canMarkComplete);
+                recyclerView.setAdapter(adapter);
+                adapter.startListening();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
 
         // Set the adapter
         Context context = view.getContext();
@@ -72,9 +101,35 @@ public class OpportunityFragment extends Fragment {
             recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
         }
 
+        // Configure recycler adapter options:
+        //  * query is the Query object defined above.
+        //  * Opportunity.class instructs the adapter to convert each DocumentSnapshot to a Chat object
+        updateParams();
+        FirestoreRecyclerOptions options = new FirestoreRecyclerOptions.Builder<Opportunity>()
+                .setQuery(query, Opportunity.class)
+                .build();
+
+        adapter = new OpportunityAdapter(options, canApply, canView, canViewApplicants, canMarkComplete);
+        recyclerView.setAdapter(adapter);
+
+        return view;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        adapter.startListening();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        adapter.stopListening();
+    }
+
+    private void updateParams() {
         // Using FirebaseUI
         String currentUID = FirebaseAuth.getInstance().getUid();
-        Query query;
         switch (mUserType) {
             case "Volunteer":
                 query = FirebaseFirestore.getInstance()
@@ -90,9 +145,10 @@ public class OpportunityFragment extends Fragment {
                 query = FirebaseFirestore.getInstance()
                         .collection("opportunities")
                         .whereEqualTo("completed", false)
-                        .whereEqualTo("applicantsUIDs."+currentUID, null)
+                        .whereEqualTo("applicantsUIDs." + currentUID, appStatus)
                         .limit(50);
                 servicesHeader.setText(R.string.your_applications);
+                spinnerAppStatus.setVisibility(View.VISIBLE);
                 canView = true;
                 break;
 
@@ -133,29 +189,5 @@ public class OpportunityFragment extends Fragment {
                 servicesHeader.setText(R.string.all_opportunities);
                 break;
         }
-
-        // Configure recycler adapter options:
-        //  * query is the Query object defined above.
-        //  * Opportunity.class instructs the adapter to convert each DocumentSnapshot to a Chat object
-        FirestoreRecyclerOptions options = new FirestoreRecyclerOptions.Builder<Opportunity>()
-                .setQuery(query, Opportunity.class)
-                .build();
-
-        adapter = new OpportunityAdapter(options, canApply, canView, canViewApplicants, canMarkComplete);
-        recyclerView.setAdapter(adapter);
-
-        return view;
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        adapter.startListening();
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        adapter.stopListening();
     }
 }

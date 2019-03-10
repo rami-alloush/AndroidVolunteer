@@ -159,13 +159,13 @@ public class MainActivity extends AppCompatActivity {
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                     if (task.isSuccessful()) {
                         DocumentSnapshot document = task.getResult();
-                        HashMap<String, Boolean> uids = (HashMap) document.getData().get("UIDS");
+                        HashMap<String, Integer> uids = (HashMap) document.getData().get("UIDS");
 
                         Log.d(TAG, document.getId() + " => " + document.getData());
 
                         Log.d(TAG, document.getId() + " => " + uids.entrySet());
                         Log.d(TAG, document.getId() + " => " + uids);
-                        for (Map.Entry<String, Boolean> myuid: uids.entrySet()) {
+                        for (Map.Entry<String, Integer> myuid: uids.entrySet()) {
                             Log.d(TAG, " => " + myuid);
                             Log.d(TAG, " => " + myuid.getKey());
                             Log.d(TAG, " => " + myuid.getValue());

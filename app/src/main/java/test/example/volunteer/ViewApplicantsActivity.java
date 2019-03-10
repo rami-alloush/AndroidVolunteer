@@ -45,10 +45,10 @@ public class ViewApplicantsActivity extends AppCompatActivity {
             if (opportunity != null) {
                 // Get all applicants
                 opportunity.getApplicantsUIDs();
-                final HashMap<String, Boolean> applicantsUIDs = opportunity.getApplicantsUIDs();
+                final HashMap<String, Integer> applicantsUIDs = opportunity.getApplicantsUIDs();
 
                 if (applicantsUIDs != null) {
-                    for (Map.Entry<String, Boolean> volunteerMap : applicantsUIDs.entrySet()) {
+                    for (Map.Entry<String, Integer> volunteerMap : applicantsUIDs.entrySet()) {
                         Log.i("MyApplicants", volunteerMap.getKey());
                         DocumentReference docRef = db.collection("users")
                                 .document(volunteerMap.getKey());

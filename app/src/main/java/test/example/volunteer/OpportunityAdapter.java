@@ -49,9 +49,9 @@ public class OpportunityAdapter extends FirestoreRecyclerAdapter<Opportunity, Op
     public int getItemViewType(int position) {
         if (canApply) {
             Opportunity opportunity = getSnapshots().getSnapshot(position).toObject(Opportunity.class);
-            HashMap<String, Boolean> applicantsUIDs = opportunity.getApplicantsUIDs();
+            HashMap<String, Integer> applicantsUIDs = opportunity.getApplicantsUIDs();
             if (applicantsUIDs != null) {
-                for (Map.Entry<String, Boolean> volunteerMap : applicantsUIDs.entrySet()) {
+                for (Map.Entry<String, Integer> volunteerMap : applicantsUIDs.entrySet()) {
                     if (volunteerMap.getKey().equals(FirebaseAuth.getInstance().getUid())) {
                         return 1;
                     }

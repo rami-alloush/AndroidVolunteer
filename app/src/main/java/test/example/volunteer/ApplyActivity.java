@@ -43,7 +43,7 @@ public class ApplyActivity extends AppCompatActivity {
 
                 final Map<String, Object> addUserToArrayMap = new HashMap<>();
                 Map<String, Object> newApplicant = new HashMap<>();
-                newApplicant.put(auth.getUid(), null);
+                newApplicant.put(auth.getUid(), 0);
                 addUserToArrayMap.put("applicantsUIDs", newApplicant);
                 addUserToArrayMap.put("hasApplications", true);
 
