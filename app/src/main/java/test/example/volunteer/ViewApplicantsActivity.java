@@ -17,6 +17,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.sql.Struct;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ViewApplicantsActivity extends AppCompatActivity {
 
@@ -43,14 +45,13 @@ public class ViewApplicantsActivity extends AppCompatActivity {
             if (opportunity != null) {
                 // Get all applicants
                 opportunity.getApplicantsUIDs();
-                final ArrayList<String> applicantsUIDs = opportunity.getApplicantsUIDs();
+                final HashMap<String, Boolean> applicantsUIDs = opportunity.getApplicantsUIDs();
 
                 if (applicantsUIDs != null) {
-                    for (int x = 0; x < applicantsUIDs.size(); x++) {
-                        String volunteerUID = applicantsUIDs.get(x);
-                        Log.i("MyApplicants", applicantsUIDs.get(x));
+                    for (Map.Entry<String, Boolean> volunteerMap : applicantsUIDs.entrySet()) {
+                        Log.i("MyApplicants", volunteerMap.getKey());
                         DocumentReference docRef = db.collection("users")
-                                .document(volunteerUID);
+                                .document(volunteerMap.getKey());
                         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                             @Override
                             public void onComplete(@NonNull Task<DocumentSnapshot> task) {

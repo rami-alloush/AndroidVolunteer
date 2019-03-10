@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -49,7 +50,7 @@ public class OpportunityEditorActivity extends AppCompatActivity {
     private Timestamp endDate;
     private Boolean completed;
     private String hospitalUID;
-    private ArrayList<String> applicantsUIDs;
+    private HashMap<String, Boolean> applicantsUIDs;
 
     //defining firebaseauth object
     private FirebaseAuth firebaseAuth;
@@ -171,7 +172,7 @@ public class OpportunityEditorActivity extends AppCompatActivity {
         String durationString =durationView.getText().toString().trim();
         completed = false;
         hospitalUID = firebaseAuth.getCurrentUser().getUid();
-        applicantsUIDs =new ArrayList<>();
+        applicantsUIDs = new HashMap<>();
 
         // Check if all the fields in the editor are filled
         if (TextUtils.isEmpty(title) || TextUtils.isEmpty(description)

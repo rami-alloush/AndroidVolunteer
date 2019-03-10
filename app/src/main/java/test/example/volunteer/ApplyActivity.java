@@ -16,9 +16,13 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
+import com.google.firestore.v1.MapValue;
 
 import java.text.SimpleDateFormat;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
 
 public class ApplyActivity extends AppCompatActivity {
@@ -37,15 +41,21 @@ public class ApplyActivity extends AppCompatActivity {
             if (opportunity != null) {
                 populateOpportunity(opportunity);
 
+                final Map<String, Object> addUserToArrayMap = new HashMap<>();
+                Map<String, Object> newApplicant = new HashMap<>();
+                newApplicant.put(auth.getUid(), null);
+                addUserToArrayMap.put("applicantsUIDs", newApplicant);
+                addUserToArrayMap.put("hasApplications", true);
+
                 Button applyBtn = findViewById(R.id.applyBtn);
                 applyBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         // Code to add Applications
+                        Map<String, Boolean> application = new HashMap<>();
                         db.collection("opportunities")
                                 .document(opportunity.getUID())
-                                .update("applicantsUIDs", FieldValue.arrayUnion(auth.getUid()),
-                                        "hasApplications", true)
+                                .set(addUserToArrayMap, SetOptions.merge()) //"hasApplications", true)
                                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {

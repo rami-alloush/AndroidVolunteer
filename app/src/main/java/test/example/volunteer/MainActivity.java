@@ -22,11 +22,13 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
-    private String TAG = "MainActivity";
+    private String TAG = "MainActivityTAG";
     //defining view objects
     private EditText editTextEmail;
     private EditText editTextPassword;
@@ -150,30 +152,55 @@ public class MainActivity extends AppCompatActivity {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         currentUser = firebaseAuth.getCurrentUser();
         if (currentUser != null) {
-            // Connect to database and get the currentUser information
-            DocumentReference docRef = db.collection("users").document(currentUser.getUid());
-            docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            // Extra
+            DocumentReference extradocRef = db.collection("users").document("0GneoPwF9hcn2FUALk9SZx4wKw72");
+            extradocRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                     if (task.isSuccessful()) {
                         DocumentSnapshot document = task.getResult();
-                        if (document != null) {
-                            // if the user exists on the database, check his type
-                            String userType = document.getString("type");
-                            Log.d(TAG, "DocumentSnapshot data: " + userType);
-                            currentUserType = userType;
-                            // redirect the user based on his type
-                            redirectUser();
-                        } else {
-                            Log.d(TAG, "No such document");
-                            userSingOut();
+                        HashMap<String, Boolean> uids = (HashMap) document.getData().get("UIDS");
+
+                        Log.d(TAG, document.getId() + " => " + document.getData());
+
+                        Log.d(TAG, document.getId() + " => " + uids.entrySet());
+                        Log.d(TAG, document.getId() + " => " + uids);
+                        for (Map.Entry<String, Boolean> myuid: uids.entrySet()) {
+                            Log.d(TAG, " => " + myuid);
+                            Log.d(TAG, " => " + myuid.getKey());
+                            Log.d(TAG, " => " + myuid.getValue());
                         }
-                    } else {
-                        Log.d(TAG, "get failed with ", task.getException());
-                        userSingOut();
+
                     }
                 }
             });
+
+            // Connect to database and get the currentUser information
+            DocumentReference docRef = db.collection("users").document(currentUser.getUid());
+            docRef.get().
+
+                    addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            if (task.isSuccessful()) {
+                                DocumentSnapshot document = task.getResult();
+                                if (document != null) {
+                                    // if the user exists on the database, check his type
+                                    String userType = document.getString("type");
+                                    Log.d(TAG, "DocumentSnapshot data: " + userType);
+                                    currentUserType = userType;
+                                    // redirect the user based on his type
+                                    redirectUser();
+                                } else {
+                                    Log.d(TAG, "No such document");
+                                    userSingOut();
+                                }
+                            } else {
+                                Log.d(TAG, "get failed with ", task.getException());
+                                userSingOut();
+                            }
+                        }
+                    });
         }
     }
 

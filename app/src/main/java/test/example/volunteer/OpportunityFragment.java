@@ -80,6 +80,7 @@ public class OpportunityFragment extends Fragment {
                 query = FirebaseFirestore.getInstance()
                         .collection("opportunities")
                         .whereEqualTo("completed", false)
+                        .orderBy("startDate")
                         .limit(50);
                 servicesHeader.setText(R.string.open_opportunities);
                 canApply = true;
@@ -89,7 +90,7 @@ public class OpportunityFragment extends Fragment {
                 query = FirebaseFirestore.getInstance()
                         .collection("opportunities")
                         .whereEqualTo("completed", false)
-                        .whereArrayContains("applicantsUIDs", currentUID)
+                        .whereEqualTo("applicantsUIDs."+currentUID, null)
                         .limit(50);
                 servicesHeader.setText(R.string.your_applications);
                 canView = true;

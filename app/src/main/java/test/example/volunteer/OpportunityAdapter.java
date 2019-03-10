@@ -21,7 +21,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 @SuppressWarnings("unchecked")
 public class OpportunityAdapter extends FirestoreRecyclerAdapter<Opportunity, OpportunityAdapter.OpportunityHolder> {
@@ -47,10 +49,10 @@ public class OpportunityAdapter extends FirestoreRecyclerAdapter<Opportunity, Op
     public int getItemViewType(int position) {
         if (canApply) {
             Opportunity opportunity = getSnapshots().getSnapshot(position).toObject(Opportunity.class);
-            ArrayList<String> getApplicantsUIDs = opportunity.getApplicantsUIDs();
-            if (getApplicantsUIDs != null) {
-                for (int x = 0; x < getApplicantsUIDs.size(); x++) {
-                    if (getApplicantsUIDs.get(x).equals(FirebaseAuth.getInstance().getUid())) {
+            HashMap<String, Boolean> applicantsUIDs = opportunity.getApplicantsUIDs();
+            if (applicantsUIDs != null) {
+                for (Map.Entry<String, Boolean> volunteerMap : applicantsUIDs.entrySet()) {
+                    if (volunteerMap.getKey().equals(FirebaseAuth.getInstance().getUid())) {
                         return 1;
                     }
                 }

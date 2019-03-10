@@ -4,7 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import com.google.firebase.Timestamp;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Opportunity implements Parcelable {
     private String title;
@@ -15,14 +15,14 @@ public class Opportunity implements Parcelable {
     private Timestamp endDate;
     private Boolean completed;
     private String hospitalUID;
-    private ArrayList<String> applicantsUIDs;
+    private HashMap<String, Boolean> applicantsUIDs;
     private Boolean hasApplications;
     private String UID;
 
     public Opportunity() {
     } // Needed for Firestore
 
-    public Opportunity(String title, String description, String location, int duration, Timestamp startDate, Timestamp endDate, Boolean completed, String hospitalUID, ArrayList applicantsUIDs) {
+    public Opportunity(String title, String description, String location, int duration, Timestamp startDate, Timestamp endDate, Boolean completed, String hospitalUID, HashMap applicantsUIDs) {
         this.title = title;
         this.description = description;
         this.location = location;
@@ -98,11 +98,11 @@ public class Opportunity implements Parcelable {
         this.hospitalUID = hospitalUID;
     }
 
-    public ArrayList<String> getApplicantsUIDs() {
+    public HashMap<String, Boolean> getApplicantsUIDs() {
         return applicantsUIDs;
     }
 
-    public void setApplicantsUIDs(ArrayList<String> applicantsUIDs) {
+    public void setApplicantsUIDs(HashMap<String, Boolean> applicantsUIDs) {
         this.applicantsUIDs = applicantsUIDs;
     }
 
@@ -132,12 +132,7 @@ public class Opportunity implements Parcelable {
         byte completedVal = in.readByte();
         completed = completedVal == 0x02 ? null : completedVal != 0x00;
         hospitalUID = in.readString();
-        if (in.readByte() == 0x01) {
-            applicantsUIDs = new ArrayList<>();
-            in.readList(applicantsUIDs, String.class.getClassLoader());
-        } else {
-            applicantsUIDs = null;
-        }
+        applicantsUIDs = (HashMap) in.readValue(HashMap.class.getClassLoader());
         byte hasApplicationsVal = in.readByte();
         hasApplications = hasApplicationsVal == 0x02 ? null : hasApplicationsVal != 0x00;
         UID = in.readString();
@@ -162,12 +157,7 @@ public class Opportunity implements Parcelable {
             dest.writeByte((byte) (completed ? 0x01 : 0x00));
         }
         dest.writeString(hospitalUID);
-        if (applicantsUIDs == null) {
-            dest.writeByte((byte) (0x00));
-        } else {
-            dest.writeByte((byte) (0x01));
-            dest.writeList(applicantsUIDs);
-        }
+        dest.writeValue(applicantsUIDs);
         if (hasApplications == null) {
             dest.writeByte((byte) (0x02));
         } else {
