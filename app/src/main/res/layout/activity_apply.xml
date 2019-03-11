@@ -233,6 +233,21 @@
             android:text="@string/apply_for_opportunity"
             style="@style/Base.Widget.AppCompat.Button.Colored"/>
 
+        <TextView
+            android:id="@+id/appStatus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:background="@android:color/darker_gray"
+            android:padding="16dp"
+            android:text="@string/application_not_revieweed"
+            android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            android:visibility="gone"/>
+
     </LinearLayout>
 
 </ScrollView>

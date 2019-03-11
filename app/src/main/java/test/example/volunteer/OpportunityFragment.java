@@ -28,6 +28,7 @@ public class OpportunityFragment extends Fragment {
     private int mColumnCount = 1;
     private String mUserType = "default";
     private Query query;
+    private RecyclerView recyclerView;
     private OpportunityAdapter adapter;
     private TextView servicesHeader;
     private Spinner spinnerAppStatus;
@@ -68,21 +69,15 @@ public class OpportunityFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_opportunity, container, false);
-        final RecyclerView recyclerView = view.findViewById(R.id.servicesRecyclerView);
+        recyclerView = view.findViewById(R.id.servicesRecyclerView);
         servicesHeader = view.findViewById(R.id.opportunityListHeader);
         spinnerAppStatus = view.findViewById(R.id.spinnerAppStatus);
         spinnerAppStatus.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//                Log.d(TAG, "Position changed to: "+ position);
                 appStatus = position;
-                updateParams();
-                FirestoreRecyclerOptions options = new FirestoreRecyclerOptions.Builder<Opportunity>()
-                        .setQuery(query, Opportunity.class)
-                        .build();
-                adapter.stopListening();
-                adapter = new OpportunityAdapter(options, canApply, canView, canViewApplicants, canMarkComplete);
-                recyclerView.setAdapter(adapter);
-                adapter.startListening();
+                updateUIParams();
             }
 
             @Override
@@ -101,34 +96,16 @@ public class OpportunityFragment extends Fragment {
             recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
         }
 
-        // Configure recycler adapter options:
-        //  * query is the Query object defined above.
-        //  * Opportunity.class instructs the adapter to convert each DocumentSnapshot to a Chat object
-        updateParams();
-        FirestoreRecyclerOptions options = new FirestoreRecyclerOptions.Builder<Opportunity>()
-                .setQuery(query, Opportunity.class)
-                .build();
-
-        adapter = new OpportunityAdapter(options, canApply, canView, canViewApplicants, canMarkComplete);
-        recyclerView.setAdapter(adapter);
+        // Configure recycler adapter options
+        updateUIParams();
 
         return view;
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        adapter.startListening();
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        adapter.stopListening();
-    }
-
-    private void updateParams() {
+    private void updateUIParams() {
         // Using FirebaseUI
+        //  * query is the Query object defined above.
+        //  * Opportunity.class instructs the adapter to convert each DocumentSnapshot to a Chat object
         String currentUID = FirebaseAuth.getInstance().getUid();
         switch (mUserType) {
             case "Volunteer":
@@ -189,5 +166,28 @@ public class OpportunityFragment extends Fragment {
                 servicesHeader.setText(R.string.all_opportunities);
                 break;
         }
+
+        // For normal fragments to work
+        FirestoreRecyclerOptions options = new FirestoreRecyclerOptions.Builder<Opportunity>()
+                .setQuery(query, Opportunity.class)
+                .build();
+
+        adapter = new OpportunityAdapter(options, canApply, canView, canViewApplicants, canMarkComplete);
+        recyclerView.setAdapter(adapter);
+
+        // Important to restart the adapter when query change
+        adapter.startListening();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        adapter.startListening();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        adapter.stopListening();
     }
 }

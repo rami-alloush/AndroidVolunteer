@@ -125,6 +125,9 @@
     <string name="title_opportunities_completed">Opportunities (Completed)</string>
     <string name="applied_volunteers">Applied Volunteers</string>
     <string name="volunteer_profile">Volunteer Profile</string>
+    <string name="application_not_revieweed">Application Not Reviewed Yet!</string>
+    <string name="app_accepted">You application is accepted :)</string>
+    <string name="app_rejected">Sorry you application is rejected :/</string>
 
     <string-array name="array_app_status">
         <item>New Applications</item>

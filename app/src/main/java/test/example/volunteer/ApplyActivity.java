@@ -3,6 +3,7 @@ package test.example.volunteer;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -19,6 +20,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
 import com.google.firestore.v1.MapValue;
 
+import org.w3c.dom.Text;
+
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Locale;
@@ -27,15 +30,17 @@ import java.util.Objects;
 
 public class ApplyActivity extends AppCompatActivity {
 
+    private String TAG = "ApplyActivityTAG";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_apply);
 
         final FirebaseFirestore db = FirebaseFirestore.getInstance();
-        final FirebaseAuth auth = FirebaseAuth.getInstance();
+        FirebaseAuth auth = FirebaseAuth.getInstance();
         Bundle extras = getIntent().getExtras();
-        if (extras != null) {
+        if (extras != null && auth.getUid() != null) {
             final Opportunity opportunity = extras.getParcelable("opportunity");
 
             if (opportunity != null) {
@@ -68,9 +73,26 @@ public class ApplyActivity extends AppCompatActivity {
                     }
                 });
 
+                // Changes in case just viewing (not applying)
                 if ((Boolean) extras.get("canView")) {
                     setTitle(R.string.your_application);
                     applyBtn.setVisibility(View.GONE);
+                    TextView appStatus = findViewById(R.id.appStatus);
+                    appStatus.setVisibility(View.VISIBLE);
+
+                    Integer myAppStatus = opportunity.getApplicantsUIDs().get(auth.getUid());
+//                    Log.d(TAG, String.valueOf(myAppStatus));
+                    switch (myAppStatus) {
+                        case 1:
+                            appStatus.setText(R.string.app_accepted);
+                            appStatus.setBackgroundColor(0xFF008000); // (Green) 0xFF + HEX RGB
+                            break; // You have to break so that code execution stops
+                        case 2:
+                            appStatus.setText(R.string.app_rejected);
+                            appStatus.setBackgroundColor(0xFFFF0000); // (Red) 0xFF + HEX RGB
+                            break;
+                    }
+
                 }
 
                 // Connect to database and get the Hospital information
