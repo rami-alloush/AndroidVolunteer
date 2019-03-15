@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +19,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -30,24 +28,20 @@ public class OpportunityAdapter extends FirestoreRecyclerAdapter<Opportunity, Op
 
     private View mView;
     private Context context;
-    private Boolean canApply;
-    private Boolean canView;
-    private Boolean canViewApplicants;
-    private Boolean canMarkComplete;
+    private String User_Page;
 
     // data is passed into the constructor
-    OpportunityAdapter(@NonNull FirestoreRecyclerOptions options, Boolean canApply, Boolean canView, Boolean canViewApplicants, Boolean canMarkComplete) {
+    OpportunityAdapter(@NonNull FirestoreRecyclerOptions options, String User_Page) {
         super(options);
-        this.canApply = canApply;
-        this.canView = canView;
-        this.canViewApplicants = canViewApplicants;
-        this.canMarkComplete = canMarkComplete;
+        this.User_Page = User_Page;
     }
 
     // If needed to change ViewType
     @Override
     public int getItemViewType(int position) {
-        if (canApply) {
+        // Change ViewType to be able to hide the Opportunities that volunteer already applied for
+        if (User_Page.equals("Volunteer_Opportunities")) {
+            // We are in the Open Opportunities page for the Volunteer
             Opportunity opportunity = getSnapshots().getSnapshot(position).toObject(Opportunity.class);
             HashMap<String, Integer> applicantsUIDs = opportunity.getApplicantsUIDs();
             if (applicantsUIDs != null) {
@@ -65,7 +59,7 @@ public class OpportunityAdapter extends FirestoreRecyclerAdapter<Opportunity, Op
     @NonNull
     @Override
     public OpportunityHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        if(viewType == 1) {
+        if (viewType == 1) {
             mView = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.empty_item, parent, false);
         } else {
@@ -99,13 +93,22 @@ public class OpportunityAdapter extends FirestoreRecyclerAdapter<Opportunity, Op
         mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (canApply || canView) {
+                if (User_Page.equals("Volunteer_Opportunities")) {
+                    // For Volunteer, to be able to apply or see application status
                     opportunity.setUID(getSnapshots().getSnapshot(current).getId());
                     Intent intent = new Intent(context, ApplyActivity.class);
                     intent.putExtra("opportunity", opportunity);
-                    intent.putExtra("canView", canView);
+                    intent.putExtra("viewStatus", false);
                     context.startActivity(intent);
-                } else if (canViewApplicants) {
+                } else if (User_Page.equals("Volunteer_Applications")) {
+                    // For Volunteer, to be able to apply or see application status
+                    opportunity.setUID(getSnapshots().getSnapshot(current).getId());
+                    Intent intent = new Intent(context, ApplyActivity.class);
+                    intent.putExtra("opportunity", opportunity);
+                    intent.putExtra("viewStatus", true);
+                    context.startActivity(intent);
+                } else if (User_Page.equals("Hospital_Applications")) {
+                    // For Hospital to be able to view applicants and their applications
                     opportunity.setUID(getSnapshots().getSnapshot(current).getId());
                     Intent intent = new Intent(context, ViewApplicantsActivity.class);
                     intent.putExtra("opportunity", opportunity);
@@ -115,8 +118,8 @@ public class OpportunityAdapter extends FirestoreRecyclerAdapter<Opportunity, Op
             }
         });
 
-        // Set ability to mark opportunity complete
-        if (canMarkComplete) {
+        // Set ability to mark Open Opportunity completed
+        if (User_Page.equals("Hospital_Opportunities_Open")) {
             holder.opportunityComplete.setVisibility(View.VISIBLE);
             holder.opportunityComplete.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override

@@ -22,10 +22,6 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-
 public class MainActivity extends AppCompatActivity {
 
     private String TAG = "MainActivityTAG";
@@ -137,7 +133,7 @@ public class MainActivity extends AppCompatActivity {
                             getUserTypeAndRedirect();
                         } else {
                             //display some message here
-                            Toast.makeText(getBaseContext(), getString(R.string.error) + Objects.requireNonNull(task.getException()).getLocalizedMessage(), Toast.LENGTH_LONG).show();
+                            Toast.makeText(getBaseContext(), getString(R.string.error) + task.getException().getLocalizedMessage(), Toast.LENGTH_LONG).show();
                         }
                         progressDialog.dismiss();
                     }
@@ -152,28 +148,6 @@ public class MainActivity extends AppCompatActivity {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         currentUser = firebaseAuth.getCurrentUser();
         if (currentUser != null) {
-            // Extra
-            DocumentReference extradocRef = db.collection("users").document("0GneoPwF9hcn2FUALk9SZx4wKw72");
-            extradocRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                    if (task.isSuccessful()) {
-                        DocumentSnapshot document = task.getResult();
-                        HashMap<String, Integer> uids = (HashMap) document.getData().get("UIDS");
-
-                        Log.d(TAG, document.getId() + " => " + document.getData());
-
-                        Log.d(TAG, document.getId() + " => " + uids.entrySet());
-                        Log.d(TAG, document.getId() + " => " + uids);
-                        for (Map.Entry<String, Integer> myuid: uids.entrySet()) {
-                            Log.d(TAG, " => " + myuid);
-                            Log.d(TAG, " => " + myuid.getKey());
-                            Log.d(TAG, " => " + myuid.getValue());
-                        }
-
-                    }
-                }
-            });
 
             // Connect to database and get the currentUser information
             DocumentReference docRef = db.collection("users").document(currentUser.getUid());
@@ -209,7 +183,7 @@ public class MainActivity extends AppCompatActivity {
     based on the user type
      */
     private void redirectUser() {
-        Log.d(TAG, "Current userType: " + currentUserType);
+        Log.d(TAG, "CurrentUserType: " + currentUserType);
         if (currentUserType != null) {
             switch (currentUserType) {
                 case "Volunteer":

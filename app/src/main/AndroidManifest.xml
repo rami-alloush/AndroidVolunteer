@@ -12,7 +12,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -47,8 +46,11 @@
             android:name=".ViewApplicantsActivity"
             android:label="@string/applied_volunteers"
             android:parentActivityName=".HospitalHomeActivity"
-            android:theme="@style/Hospital"/>
-
+            android:theme="@style/Hospital" />
+        <activity
+            android:name=".ViewApplicationActivity"
+            android:label="@string/volunteer_profile"
+            android:parentActivityName=".HospitalHomeActivity"/>
     </application>
 
 </manifest>

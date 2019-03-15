@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".ViewApplicationActivity">
+
+        <TextView
+            android:id="@+id/volunteerFirstNameLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="32dp"
+            android:text="@string/first_name" />
+
+        <EditText
+            android:id="@+id/volunteerFirstName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:inputType="textCapWords"
+            android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            tools:hint="@string/first_name"
+            tools:text="@string/first_name"
+            tools:ignore="Autofill,LabelFor"
+            android:textColor="@android:color/black"/>
+
+        <TextView
+            android:id="@+id/volunteerLastNameLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:text="@string/last_name" />
+
+        <EditText
+            android:id="@+id/volunteerLastName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:inputType="textCapWords"
+            android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            tools:ignore="Autofill,LabelFor"
+            tools:text="@string/last_name"
+            android:textColor="@android:color/black"/>
+
+        <TextView
+            android:id="@+id/volunteerEmailLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:hint="@string/email"
+            android:text="@string/email" />
+
+        <EditText
+            android:id="@+id/volunteerEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:inputType="textEmailAddress"
+            android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            tools:hint="@string/email"
+            tools:ignore="Autofill,LabelFor"
+            tools:text="@string/email"
+            android:textColor="@android:color/black"/>
+
+        <TextView
+            android:id="@+id/volunteerMobileLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:hint="@string/mobile"
+            android:text="@string/mobile" />
+
+        <EditText
+            android:id="@+id/volunteerMobile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:autofillHints=""
+            android:ems="10"
+            android:hint="@string/mobile"
+            android:inputType="phone"
+            android:singleLine="true"
+            android:textAlignment="center"
+            tools:targetApi="o"
+            android:textColor="@android:color/black"/>
+
+        <TextView
+            android:id="@+id/volunteerAgeLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:hint="@string/age"
+            android:text="@string/age" />
+
+        <EditText
+            android:id="@+id/volunteerAge"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:autofillHints=""
+            android:ems="10"
+            android:hint="@string/age"
+            android:inputType="number"
+            android:textAlignment="center"
+            tools:targetApi="o"
+            android:textColor="@android:color/black"/>
+
+        <TextView
+            android:id="@+id/volunteerGenderLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:hint="@string/gender"
+            android:text="@string/gender" />
+
+        <EditText
+            android:id="@+id/volunteerGender"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:autofillHints=""
+            android:ems="10"
+            android:hint="@string/gender"
+            android:textAlignment="center"
+            tools:targetApi="o"
+            android:textColor="@android:color/black"/>
+
+        <TextView
+            android:id="@+id/volunteerCityLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:hint="@string/city"
+            android:text="@string/city" />
+
+        <EditText
+            android:id="@+id/volunteerCity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:autofillHints=""
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:textAlignment="center"
+            tools:targetApi="o"
+            android:textColor="@android:color/black"/>
+
+        <TextView
+            android:id="@+id/volunteerDegreeLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:hint="@string/degree"
+            android:text="@string/degree" />
+
+        <EditText
+            android:id="@+id/volunteerDegree"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:autofillHints=""
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:textAlignment="center"
+            tools:targetApi="o"
+            android:textColor="@android:color/black"/>
+
+        <TextView
+            android:id="@+id/volunteerSkillsLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:hint="@string/skills"
+            android:text="@string/skills" />
+
+        <EditText
+            android:id="@+id/volunteerSkills"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textMultiLine"
+            android:padding="8dp"
+            android:autofillHints=""
+            android:ems="10"
+            android:hint="@string/skills"
+            android:textAlignment="center"
+            tools:targetApi="o"
+            android:textColor="@android:color/black"/>
+
+        <ImageView
+            android:id="@+id/volunteerCV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="16dp"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/load_cv"
+            tools:srcCompat="@android:drawable/ic_menu_report_image" />
+
+        <Button
+            android:id="@+id/acceptAppBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="@android:color/holo_green_dark"
+            android:text="@string/accept"
+            android:textColor="@android:color/white" />
+
+        <Button
+            android:id="@+id/rejectAppBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="@android:color/holo_red_dark"
+            android:text="@string/reject"
+            android:textColor="@android:color/white" />
+
+    </LinearLayout>
+</android.support.v4.widget.NestedScrollView>

@@ -15,13 +15,13 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.sql.Struct;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 public class ViewApplicantsActivity extends AppCompatActivity {
 
+    private static final String TAG = "ViewApplicantsActivity";
     private ApplicantsRecyclerViewAdapter adapter;
 
     @Override
@@ -37,6 +37,7 @@ public class ViewApplicantsActivity extends AppCompatActivity {
 
             // data to populate the RecyclerView with
             final ArrayList<Volunteer> volunteers = new ArrayList<>();
+            final ArrayList<Integer> volunteersAppsStatus = new ArrayList<>();
 
             // set up the RecyclerView
             final RecyclerView recyclerView = findViewById(R.id.rvVolunteers);
@@ -48,10 +49,11 @@ public class ViewApplicantsActivity extends AppCompatActivity {
                 final HashMap<String, Integer> applicantsUIDs = opportunity.getApplicantsUIDs();
 
                 if (applicantsUIDs != null) {
-                    for (Map.Entry<String, Integer> volunteerMap : applicantsUIDs.entrySet()) {
-                        Log.i("MyApplicants", volunteerMap.getKey());
+                    for (final Map.Entry<String, Integer> volunteerMap : applicantsUIDs.entrySet()) {
+                        String voluntteerUID = volunteerMap.getKey();
+                        final Integer voluntteerAppStatus = volunteerMap.getValue();
                         DocumentReference docRef = db.collection("users")
-                                .document(volunteerMap.getKey());
+                                .document(voluntteerUID);
                         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                             @Override
                             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -59,8 +61,9 @@ public class ViewApplicantsActivity extends AppCompatActivity {
                                     DocumentSnapshot doc = task.getResult();
                                     if (doc != null) {
                                         volunteers.add(doc.toObject(Volunteer.class));
+                                        volunteersAppsStatus.add(voluntteerAppStatus);
                                         // make sure adapter is not set until data is retrieved
-                                        adapter = new ApplicantsRecyclerViewAdapter(ViewApplicantsActivity.this, volunteers);
+                                        adapter = new ApplicantsRecyclerViewAdapter(ViewApplicantsActivity.this, volunteers, volunteersAppsStatus, opportunity);
                                         recyclerView.setAdapter(adapter);
                                     }
                                 }

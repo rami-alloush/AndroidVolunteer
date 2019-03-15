@@ -13,7 +13,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -111,11 +110,11 @@ public class HospitalHomeActivity extends AppCompatActivity {
             // Return a ServicesFragment (defined as a static inner class below).
             switch (position) {
                 case 0:
-                    return OpportunityFragment.newInstance("Hospital", 0);
+                    return OpportunityFragment.newInstance("Hospital_Opportunities_Open", 0);
                 case 1:
-                    return OpportunityFragment.newInstance("HospitalCompleted", 0);
+                    return OpportunityFragment.newInstance("Hospital_Opportunities_Completed", 0);
                 case 2:
-                    return OpportunityFragment.newInstance("HospitalApplications", 0);
+                    return OpportunityFragment.newInstance("Hospital_Applications", 0);
                 default:
                     return new BlankFragment();
             }

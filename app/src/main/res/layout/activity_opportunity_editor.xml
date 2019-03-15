@@ -41,7 +41,7 @@
         android:id="@+id/setDates"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Set start and end date" />
+        android:text="@string/set_start_and_end_date" />
 
     <EditText
         android:id="@+id/opportunityLocation"

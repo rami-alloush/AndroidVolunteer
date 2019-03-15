@@ -2,7 +2,6 @@ package test.example.volunteer;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -10,12 +9,8 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
 
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -78,9 +73,9 @@ public class VolunteerHomeActivity extends AppCompatActivity {
             // Return a ServicesFragment (defined as a static inner class below).
             switch (position) {
                 case 0:
-                    return OpportunityFragment.newInstance("Volunteer", 0);
+                    return OpportunityFragment.newInstance("Volunteer_Opportunities", 0);
                 default:
-                    return OpportunityFragment.newInstance("VolunteerApplications", 0);
+                    return OpportunityFragment.newInstance("Volunteer_Applications", 0);
             }
         }
 

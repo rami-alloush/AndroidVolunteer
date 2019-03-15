@@ -128,6 +128,13 @@
     <string name="application_not_revieweed">Application Not Reviewed Yet!</string>
     <string name="app_accepted">You application is accepted :)</string>
     <string name="app_rejected">Sorry you application is rejected :/</string>
+    <string name="accept">Accept</string>
+    <string name="reject">Reject</string>
+    <string name="gender">Gender</string>
+    <string name="skills">Skills</string>
+    <string name="set_start_and_end_date">Set start and end date</string>
+    <string name="application_status_updated">Application Updated Successfully :)</string>
+    <string name="filter">Filter</string>
 
     <string-array name="array_app_status">
         <item>New Applications</item>

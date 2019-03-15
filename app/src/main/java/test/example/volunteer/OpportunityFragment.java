@@ -1,9 +1,14 @@
 package test.example.volunteer;
 
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -12,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -20,22 +26,18 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
-public class OpportunityFragment extends Fragment {
+public class OpportunityFragment extends Fragment implements EditNameDialogFragment.EditNameDialogListener {
 
     private static final String ARG_COLUMN_COUNT = "column-count";
     private static final String ARG_USER_TYPE = "user-type";
     private static final String TAG = "OpportunityFragmentTAG";
     private int mColumnCount = 1;
-    private String mUserType = "default";
-    private Query query;
+    private String User_Page = "default";
     private RecyclerView recyclerView;
     private OpportunityAdapter adapter;
     private TextView servicesHeader;
     private Spinner spinnerAppStatus;
-    private Boolean canApply = false;
-    private Boolean canView = false;
-    private Boolean canViewApplicants = false;
-    private Boolean canMarkComplete = false;
+    private Button filterBtn;
     private Integer appStatus = null;
 
     /**
@@ -61,7 +63,7 @@ public class OpportunityFragment extends Fragment {
 
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
-            mUserType = getArguments().getString(ARG_USER_TYPE);
+            User_Page = getArguments().getString(ARG_USER_TYPE);
         }
     }
 
@@ -71,6 +73,13 @@ public class OpportunityFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_opportunity, container, false);
         recyclerView = view.findViewById(R.id.servicesRecyclerView);
         servicesHeader = view.findViewById(R.id.opportunityListHeader);
+        filterBtn = view.findViewById(R.id.filterBtn);
+        filterBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showEditDialog();
+            }
+        });
         spinnerAppStatus = view.findViewById(R.id.spinnerAppStatus);
         spinnerAppStatus.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -107,39 +116,40 @@ public class OpportunityFragment extends Fragment {
         //  * query is the Query object defined above.
         //  * Opportunity.class instructs the adapter to convert each DocumentSnapshot to a Chat object
         String currentUID = FirebaseAuth.getInstance().getUid();
-        switch (mUserType) {
-            case "Volunteer":
+        Query query;
+        switch (User_Page) {
+            case "Volunteer_Opportunities":
                 query = FirebaseFirestore.getInstance()
                         .collection("opportunities")
                         .whereEqualTo("completed", false)
                         .orderBy("startDate")
                         .limit(50);
                 servicesHeader.setText(R.string.open_opportunities);
-                canApply = true;
+                // Show button to open Filter Opportunities Dialog
+                filterBtn.setVisibility(View.VISIBLE);
                 break;
 
-            case "VolunteerApplications":
+            case "Volunteer_Applications":
                 query = FirebaseFirestore.getInstance()
                         .collection("opportunities")
                         .whereEqualTo("completed", false)
                         .whereEqualTo("applicantsUIDs." + currentUID, appStatus)
                         .limit(50);
                 servicesHeader.setText(R.string.your_applications);
+                // Show menu to filter applications by status
                 spinnerAppStatus.setVisibility(View.VISIBLE);
-                canView = true;
                 break;
 
-            case "Hospital":
+            case "Hospital_Opportunities_Open":
                 query = FirebaseFirestore.getInstance()
                         .collection("opportunities")
                         .whereEqualTo("completed", false)
                         .whereEqualTo("hospitalUID", currentUID)
                         .limit(50);
                 servicesHeader.setText(R.string.your_open_opportunities);
-                canMarkComplete = true;
                 break;
 
-            case "HospitalCompleted":
+            case "Hospital_Opportunities_Completed":
                 query = FirebaseFirestore.getInstance()
                         .collection("opportunities")
                         .whereEqualTo("completed", true)
@@ -148,7 +158,7 @@ public class OpportunityFragment extends Fragment {
                 servicesHeader.setText(R.string.your_completed_opportunities);
                 break;
 
-            case "HospitalApplications":
+            case "Hospital_Applications":
                 query = FirebaseFirestore.getInstance()
                         .collection("opportunities")
                         .whereEqualTo("completed", false)
@@ -156,7 +166,6 @@ public class OpportunityFragment extends Fragment {
                         .whereEqualTo("hospitalUID", currentUID)
                         .limit(50);
                 servicesHeader.setText(R.string.your_applications);
-                canViewApplicants = true;
                 break;
 
             default:
@@ -172,7 +181,7 @@ public class OpportunityFragment extends Fragment {
                 .setQuery(query, Opportunity.class)
                 .build();
 
-        adapter = new OpportunityAdapter(options, canApply, canView, canViewApplicants, canMarkComplete);
+        adapter = new OpportunityAdapter(options, User_Page);
         recyclerView.setAdapter(adapter);
 
         // Important to restart the adapter when query change
@@ -189,5 +198,18 @@ public class OpportunityFragment extends Fragment {
     public void onStop() {
         super.onStop();
         adapter.stopListening();
+    }
+
+    private void showEditDialog() {
+        EditNameDialogFragment editNameDialogFragment = EditNameDialogFragment .newInstance("Some Title");
+        // SETS the target fragment for use later when sending results
+        editNameDialogFragment.setTargetFragment(OpportunityFragment.this, 300);
+        editNameDialogFragment.show(getFragmentManager(), "fragment_edit_name");
+
+    }
+
+    @Override
+    public void onFinishEditDialog(String inputText) {
+        Log.d(TAG, inputText);
     }
 }
