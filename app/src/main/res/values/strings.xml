@@ -135,10 +135,20 @@
     <string name="set_start_and_end_date">Set start and end date</string>
     <string name="application_status_updated">Application Updated Successfully :)</string>
     <string name="filter">Filter</string>
+    <string name="filter_opportunities">Filter Opportunities</string>
 
     <string-array name="array_app_status">
         <item>New Applications</item>
         <item>Accepted Applications</item>
         <item>Rejected Applications</item>
+    </string-array>
+
+    <string-array name="array_cities">
+        <item>Remote *</item>
+        <item>Al Khobar</item>
+        <item>Ad Dammam</item>
+        <item>Madinah</item>
+        <item>Makkah</item>
+        <item>Riyadh</item>
     </string-array>
 </resources>

@@ -113,10 +113,8 @@ public class HospitalHomeActivity extends AppCompatActivity {
                     return OpportunityFragment.newInstance("Hospital_Opportunities_Open", 0);
                 case 1:
                     return OpportunityFragment.newInstance("Hospital_Opportunities_Completed", 0);
-                case 2:
-                    return OpportunityFragment.newInstance("Hospital_Applications", 0);
                 default:
-                    return new BlankFragment();
+                    return OpportunityFragment.newInstance("Hospital_Applications", 0);
             }
         }
 
