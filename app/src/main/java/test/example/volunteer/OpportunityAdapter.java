@@ -93,7 +93,8 @@ public class OpportunityAdapter extends FirestoreRecyclerAdapter<Opportunity, Op
         mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (User_Page.equals("Volunteer_Opportunities")) {
+                if (User_Page.equals("Volunteer_Opportunities") ||
+                        User_Page.equals("Volunteer_Opportunities_Filtered")) {
                     // For Volunteer, to be able to apply or see application status
                     opportunity.setUID(getSnapshots().getSnapshot(current).getId());
                     Intent intent = new Intent(context, ApplyActivity.class);

@@ -229,9 +229,6 @@ public class OpportunityFragment extends Fragment implements FilterOpportunities
         locationFilter = location;
         durationMinValue = durationMinVal;
         durationMaxValue = durationMaxVal;
-        SharedPrefsUtils.setIntegerPreference(getContext(), "durationMinValue", durationMinVal);
-        SharedPrefsUtils.setIntegerPreference(getContext(), "durationMaxValue", durationMaxVal);
-//        SharedPrefsUtils.setIntegerPreference(this, "paillier_public_key_n", public_key_n);
         User_Page = "Volunteer_Opportunities_Filtered";
         updateUIParams();
     }

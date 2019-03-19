@@ -43,16 +43,23 @@
         android:layout_height="wrap_content"
         android:text="@string/set_start_and_end_date" />
 
-    <EditText
-        android:id="@+id/opportunityLocation"
-        tools:targetApi="o"
+    <!--<EditText-->
+        <!--android:id="@+id/opportunityLocation"-->
+        <!--tools:targetApi="o"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:autofillHints=""-->
+        <!--android:ems="10"-->
+        <!--android:hint="@string/location"-->
+        <!--android:inputType="textPersonName"-->
+        <!--android:textAlignment="center" />-->
+
+    <Spinner
+        android:id="@+id/opportunityLocationSpinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:autofillHints=""
-        android:ems="10"
-        android:hint="@string/location"
-        android:inputType="textPersonName"
-        android:textAlignment="center" />
+        android:padding="8dp"
+        android:entries="@array/array_cities"/>
 
     <MultiAutoCompleteTextView
         android:id="@+id/opportunityDescription"

@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -35,7 +36,8 @@ public class OpportunityEditorActivity extends AppCompatActivity {
      */
     private EditText titleView;
     private EditText descriptionView;
-    private EditText locationView;
+//    private EditText locationView;
+    private Spinner locationView;
     private EditText durationView;
     private Button setDates;
 
@@ -92,7 +94,8 @@ public class OpportunityEditorActivity extends AppCompatActivity {
         // Find relevant views that will display data
         titleView = findViewById(R.id.opportunityTitle);
         descriptionView = findViewById(R.id.opportunityDescription);
-        locationView = findViewById(R.id.opportunityLocation);
+//        locationView = findViewById(R.id.opportunityLocation);
+        locationView = findViewById(R.id.opportunityLocationSpinner);
         durationView = findViewById(R.id.opportunityDuration);
 
         //initializing firebase auth object
@@ -165,7 +168,8 @@ public class OpportunityEditorActivity extends AppCompatActivity {
         // Use trim to eliminate leading or trailing white space
         title = titleView.getText().toString().trim();
         description = descriptionView.getText().toString().trim();
-        location = locationView.getText().toString().trim();
+//        location = locationView.getText().toString().trim();
+        location = locationView.getSelectedItem().toString().trim();
         String durationString =durationView.getText().toString().trim();
         completed = false;
         hospitalUID = firebaseAuth.getCurrentUser().getUid();
