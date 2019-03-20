@@ -61,9 +61,18 @@ public class FilterOpportunitiesDialogFragment extends DialogFragment {
         filterBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sendBackResult();
+                sendBackResult(false);
             }
         });
+        Button clearFilterBtn = view.findViewById(R.id.clearFilterBtn);
+        clearFilterBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendBackResult(true);
+            }
+        });
+
+
 
         locationSpinner = view.findViewById(R.id.locationSpinner);
         durationMin = view.findViewById(R.id.durationMin);
@@ -89,24 +98,34 @@ public class FilterOpportunitiesDialogFragment extends DialogFragment {
     }
 
     // Call this method to send the data back to the parent fragment
-    public void sendBackResult() {
+    public void sendBackResult(boolean clear) {
         // Notice the use of `getTargetFragment` which will be set when the dialog is displayed
         FilterOpportunitiesDialogListener listener = (FilterOpportunitiesDialogListener) getTargetFragment();
+        // Convert values
         int locationPosition = (int) locationSpinner.getSelectedItemId();
+        String locationSpinnerStr = locationSpinner.getSelectedItem().toString();
         Integer durationMinVal = Integer.valueOf(durationMin.getText().toString());
         Integer durationMaxVal = Integer.valueOf(durationMax.getText().toString());
+        if (clear) {
+            locationSpinnerStr = "ClearFilter";
+        }
+
+        // Save values to SharedPerfs
         SharedPrefsUtils.setIntegerPreference(getContext(), "locationPosition", locationPosition);
         SharedPrefsUtils.setIntegerPreference(getContext(), "durationMinValue", durationMinVal);
         SharedPrefsUtils.setIntegerPreference(getContext(), "durationMaxValue", durationMaxVal);
         assert listener != null;
+        // Send data to Listener
         listener.onFinishFilterOpportunitiesDialogListener(
-                locationSpinner.getSelectedItem().toString(), durationMinVal, durationMaxVal);
+                locationSpinnerStr, durationMinVal, durationMaxVal);
+        // Close filter dialog
         dismiss();
     }
 
     public void onResume() {
         super.onResume();
 
+        // Fix dialog size
         Window window = getDialog().getWindow();
         Point size = new Point();
         if (window != null) {

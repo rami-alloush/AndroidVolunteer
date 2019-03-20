@@ -21,7 +21,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
-public class OpportunityFragment extends Fragment implements FilterOpportunitiesDialogFragment.FilterOpportunitiesDialogListener {
+public class OpportunityFragment extends Fragment implements
+        FilterOpportunitiesDialogFragment.FilterOpportunitiesDialogListener {
 
     private static final String ARG_COLUMN_COUNT = "column-count";
     private static final String ARG_USER_TYPE = "user-type";
@@ -36,8 +37,8 @@ public class OpportunityFragment extends Fragment implements FilterOpportunities
 
     private Integer appStatus = null;
     private String locationFilter = "";
-    private Integer durationMinValue = 0;
-    private Integer durationMaxValue = 1000;
+    private Integer durationMinValue = 1;
+    private Integer durationMaxValue = 365;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -105,7 +106,6 @@ public class OpportunityFragment extends Fragment implements FilterOpportunities
 
         // Configure recycler adapter options
         updateUIParams();
-
         return view;
     }
 
@@ -207,6 +207,14 @@ public class OpportunityFragment extends Fragment implements FilterOpportunities
         adapter.startListening();
     }
 
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        updateUIParams();
+    }
+
+
     @Override
     public void onStop() {
         super.onStop();
@@ -229,7 +237,11 @@ public class OpportunityFragment extends Fragment implements FilterOpportunities
         locationFilter = location;
         durationMinValue = durationMinVal;
         durationMaxValue = durationMaxVal;
-        User_Page = "Volunteer_Opportunities_Filtered";
+        if (location.equals("ClearFilter")) {
+            User_Page = "Volunteer_Opportunities";
+        } else {
+            User_Page = "Volunteer_Opportunities_Filtered";
+        }
         updateUIParams();
     }
 }

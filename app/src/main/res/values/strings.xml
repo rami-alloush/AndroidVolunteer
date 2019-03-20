@@ -136,6 +136,12 @@
     <string name="application_status_updated">Application Updated Successfully :)</string>
     <string name="filter">Filter</string>
     <string name="filter_opportunities">Filter Opportunities</string>
+    <string name="remove_account">Remove Account</string>
+    <string name="clear_filter">Clear Filter</string>
+    <string name="opportunities_deleted">All Opportunities Deleted.</string>
+    <string name="remove_all_opportunities">Remove All Opportunities</string>
+    <string name="duration_between">Duration between</string>
+    <string name="and">and</string>
 
     <string-array name="array_app_status">
         <item>New Applications</item>

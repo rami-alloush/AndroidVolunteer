@@ -2,6 +2,7 @@ package test.example.volunteer;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -10,16 +11,28 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
 public class HospitalHomeActivity extends AppCompatActivity {
 
+    private static final String TAG = "HospitalHomeActivity";
     //defining firebaseauth object
     private FirebaseAuth firebaseAuth;
+    private FirebaseUser currentUser;
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -44,6 +57,7 @@ public class HospitalHomeActivity extends AppCompatActivity {
 
         //initializing firebase auth object
         firebaseAuth = FirebaseAuth.getInstance();
+        currentUser = firebaseAuth.getCurrentUser();
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -142,6 +156,10 @@ public class HospitalHomeActivity extends AppCompatActivity {
     // Menu Functions
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        MenuItem itemRemoveOpportunities = menu.add(Menu.NONE, 0, Menu.NONE, getString(R.string.remove_all_opportunities));
+        itemRemoveOpportunities.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
+        MenuItem itemRemoveAcc = menu.add(Menu.NONE, 1, Menu.NONE, getString(R.string.remove_account));
+        itemRemoveAcc.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
         MenuItem itemSignOut = menu.add(Menu.NONE, 10, Menu.NONE, getString(R.string.sign_out));
         itemSignOut.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
         return true;
@@ -150,6 +168,12 @@ public class HospitalHomeActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case 0:
+                deleteCurrentUserOpportunities();
+                return true;
+            case 1:
+                deleteCurrentUser();
+                return true;
             case 10:
                 userSingOut();
                 return true;
@@ -159,9 +183,9 @@ public class HospitalHomeActivity extends AppCompatActivity {
         }
     }
 
-    /*
-    Helper method for user sign ou
-    */
+    /**
+     * Helper method for user sign out
+     */
     public void userSingOut() {
         try {
             firebaseAuth.signOut();
@@ -171,4 +195,66 @@ public class HospitalHomeActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
+
+    /**
+     * Deletes currently signed in user from both firebaseAuth and DB
+     */
+    private void deleteCurrentUser() {
+        if (currentUser != null) {
+            currentUser.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    Log.d(TAG, "User Removed from firebaseAuth");
+                    deleteCurrentUserFromDB();
+                    deleteCurrentUserOpportunities();
+
+                    Intent Intent = new Intent(getBaseContext(), MainActivity.class);
+                    startActivity(Intent);
+                    Toast.makeText(HospitalHomeActivity.this,
+                            "Account Removed Successfully.", Toast.LENGTH_LONG).show();
+                    finish();
+                }
+            });
+        }
+    }
+
+    private void deleteCurrentUserFromDB() {
+        // Once user is removed from firebaseAuth, delete it from DB as well
+        FirebaseFirestore.getInstance().
+                collection("users")
+                .document(currentUser.getUid())
+                .delete()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(TAG, "User document successfully deleted!");
+                    }
+                })
+
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error deleting document", e);
+                    }
+                });
+    }
+
+    private void deleteCurrentUserOpportunities() {
+        FirebaseFirestore.getInstance()
+                .collection("opportunities")
+                .whereEqualTo("hospitalUID", currentUser.getUid())
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        for (DocumentSnapshot ds : queryDocumentSnapshots.getDocuments()) {
+                            ds.getReference().delete();
+                        }
+                        Toast.makeText(HospitalHomeActivity.this,
+                                getString(R.string.opportunities_deleted), Toast.LENGTH_LONG).show();
+                        Log.d(TAG, "All opportunities successfully deleted!");
+                    }
+                });
+    }
+
 }

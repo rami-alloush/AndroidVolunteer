@@ -40,7 +40,7 @@ public class OpportunityAdapter extends FirestoreRecyclerAdapter<Opportunity, Op
     @Override
     public int getItemViewType(int position) {
         // Change ViewType to be able to hide the Opportunities that volunteer already applied for
-        if (User_Page.equals("Volunteer_Opportunities")) {
+        if (User_Page.equals("Volunteer_Opportunities") || User_Page.equals("Volunteer_Opportunities_Filtered")) {
             // We are in the Open Opportunities page for the Volunteer
             Opportunity opportunity = getSnapshots().getSnapshot(position).toObject(Opportunity.class);
             HashMap<String, Integer> applicantsUIDs = opportunity.getApplicantsUIDs();
